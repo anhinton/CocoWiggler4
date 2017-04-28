@@ -1,9 +1,3 @@
-static String getDate() {
-    def date = new Date()
-    def formattedDate = date.format('yyyyMMddHHmmss')
-    return formattedDate
-}
-
 buildscript {
     repositories {
         mavenLocal()
@@ -13,7 +7,7 @@ buildscript {
     }
     dependencies {
         classpath 'de.richsource.gradle.plugins:gwt-gradle-plugin:0.6'
-        classpath 'com.android.tools.build:gradle:1.5.0'
+        classpath 'com.android.tools.build:gradle:2.2.2'
     }
 }
 
@@ -21,7 +15,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = "0.1-build-" + getDate()
+    version = "0.0.2017-04-28"
     ext {
         appName = "Coco Wiggler 4"
         gdxVersion = '1.9.5'
