@@ -19,10 +19,12 @@ import nz.co.canadia.cocowiggler4.util.Constants;
 public class CocoWiggler extends ApplicationAdapter {
     SpriteBatch batch;
     Texture cocoImage;
+    Texture grassImage;
     OrthographicCamera camera;
     Viewport viewport;
     ShapeRenderer shapeRenderer;
     Sprite coco;
+    Sprite grass;
     float rot;
     boolean isPressingLeft;
     boolean isPressingRight;
@@ -42,32 +44,32 @@ public class CocoWiggler extends ApplicationAdapter {
         shapeRenderer = new ShapeRenderer();
 
         batch = new SpriteBatch();
+
         cocoImage = new Texture(Gdx.files.internal("coco.png"));
         cocoImage.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
-
-        TextureRegion region = new TextureRegion(cocoImage, 0, 0, cocoImage.getWidth(),
+        TextureRegion cocoRegion = new TextureRegion(cocoImage, 0, 0, cocoImage.getWidth(),
                 cocoImage.getHeight());
-
-        coco = new Sprite(region);
+        coco = new Sprite(cocoRegion);
         coco.setOrigin(coco.getWidth() / 2, coco.getHeight() / 2);
         coco.setPosition(Constants.APP_WIDTH / 2 - cocoImage.getWidth() / 2,
                 Constants.APP_HEIGHT / 2 - cocoImage.getHeight() / 2);
+
+        grassImage = new Texture(Gdx.files.internal("grass.png"));
+        grassImage.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        TextureRegion grassRegion = new TextureRegion(grassImage, 0, 0, grassImage.getWidth(),
+                grassImage.getHeight());
+        grass = new Sprite(grassRegion);
+        grass.setOrigin(0, 0);
+        grass.setPosition(0, 0);
     }
 
     @Override
     public void render() {
-        //Gdx.gl.glClearColor(0.246f, 0.574f, 0.102f, 1);
-        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClearColor(0.246f, 0.574f, 0.102f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         camera.update();
         batch.setProjectionMatrix(camera.combined);
-
-        shapeRenderer.setProjectionMatrix(camera.combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(0.246f, 0.574f, 0.102f, 1);
-        shapeRenderer.rect(0, 0, Constants.APP_WIDTH, Constants.APP_HEIGHT);
-        shapeRenderer.end();
 
         // don't let Coco go off-screen
         if (coco.getX() < 0) {
@@ -84,12 +86,18 @@ public class CocoWiggler extends ApplicationAdapter {
         }
 
         batch.begin();
+
+        // draw grass
+        grass.draw(batch);
+
+        // draw coco
         final float degreesPerSecond = 10.0f;
         rot = (rot + Gdx.graphics.getDeltaTime() * degreesPerSecond) % 360;
         final float shakeAmplitudeInDegrees = 5.0f;
         float shake = MathUtils.sin(rot) * shakeAmplitudeInDegrees;
         coco.setRotation(shake);
         coco.draw(batch);
+
         batch.end();
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
