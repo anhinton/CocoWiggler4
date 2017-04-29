@@ -116,7 +116,6 @@ public class CocoWiggler extends ApplicationAdapter {
         if (pressingLeft) {
             if (facingRight) {
                 facingRight = false;
-                coco.setFlip(facingRight, false);
             }
             if (pressingUp) {
                 coco.setX(coco.getX() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
@@ -132,7 +131,6 @@ public class CocoWiggler extends ApplicationAdapter {
         if (pressingRight) {
             if (!facingRight) {
                 facingRight = true;
-                coco.setFlip(facingRight, false);
             }
             if (pressingUp) {
                 coco.setX(coco.getX() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
@@ -187,6 +185,9 @@ public class CocoWiggler extends ApplicationAdapter {
             }
 
         }
+
+        // set flip
+        coco.setFlip(facingRight, false);
     }
 
     @Override
