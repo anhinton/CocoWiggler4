@@ -9,7 +9,6 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -17,19 +16,18 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import nz.co.canadia.cocowiggler4.util.Constants;
 
 public class CocoWiggler extends ApplicationAdapter {
-    SpriteBatch batch;
-    Texture cocoImage;
-    Texture grassImage;
-    OrthographicCamera camera;
-    Viewport viewport;
-    ShapeRenderer shapeRenderer;
-    Sprite coco;
-    Sprite grass;
-    float rot;
-    boolean isPressingLeft;
-    boolean isPressingRight;
-    boolean isPressingUp;
-    boolean isPressingDown;
+    private SpriteBatch batch;
+    private Texture cocoImage;
+    private Texture grassImage;
+    private OrthographicCamera camera;
+    private Viewport viewport;
+    private Sprite coco;
+    private Sprite grass;
+    private float rot;
+    private boolean isPressingLeft;
+    private boolean isPressingRight;
+    private boolean isPressingUp;
+    private boolean isPressingDown;
 
     @Override
     public void create() {
@@ -41,7 +39,6 @@ public class CocoWiggler extends ApplicationAdapter {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
         viewport = new FitViewport(Constants.APP_WIDTH, Constants.APP_HEIGHT, camera);
-        shapeRenderer = new ShapeRenderer();
 
         batch = new SpriteBatch();
 
@@ -100,26 +97,10 @@ public class CocoWiggler extends ApplicationAdapter {
 
         batch.end();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            isPressingLeft = true;
-        } else {
-            isPressingLeft = false;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            isPressingRight = true;
-        } else {
-            isPressingRight = false;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            isPressingUp = true;
-        } else {
-            isPressingUp = false;
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            isPressingDown = true;
-        } else {
-            isPressingDown = false;
-        }
+        isPressingLeft = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        isPressingRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        isPressingUp = Gdx.input.isKeyPressed(Input.Keys.UP);
+        isPressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN);
 
         if (isPressingLeft) {
             if (isPressingUp) {
@@ -157,10 +138,12 @@ public class CocoWiggler extends ApplicationAdapter {
     public void dispose() {
         batch.dispose();
         cocoImage.dispose();
+        grassImage.dispose();
     }
 
     @Override
     public void resize(int width, int height) {
+
         viewport.update(width, height);
     }
 }
