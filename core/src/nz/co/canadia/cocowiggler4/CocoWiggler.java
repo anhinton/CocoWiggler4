@@ -175,6 +175,14 @@ public class CocoWiggler extends ApplicationAdapter {
             pathX = targetXYZ.x - coco.getWidth() / 2 - coco.getX();
             pathY = targetXYZ.y - coco.getHeight() / 2 - coco.getY();
 
+            // flip Coco on direction change
+            if (pathX < 0 && facingRight) {
+                facingRight = false;
+            }
+            if (pathX > 0 && !facingRight) {
+                facingRight = true;
+            }
+
             distance = (float) Math.sqrt(pathX * pathX + pathY * pathY);
             changeX = pathX / distance;
             changeY = pathY / distance;
