@@ -32,6 +32,11 @@ public class CocoWiggler extends ApplicationAdapter {
     private boolean seekingTarget;
     private boolean facingRight;
     private Vector3 targetXYZ;
+    private float pathX;
+    private float pathY;
+    private float distance;
+    private float changeX;
+    private float changeY;
 
     @Override
     public void create() {
@@ -166,19 +171,19 @@ public class CocoWiggler extends ApplicationAdapter {
             if (targetXYZ.y > Constants.APP_HEIGHT - coco.getHeight() / 2) {
                 targetXYZ.y = Constants.APP_HEIGHT - coco.getHeight() / 2;
             }
+
+            pathX = targetXYZ.x - coco.getWidth() / 2 - coco.getX();
+            pathY = targetXYZ.y - coco.getHeight() / 2 - coco.getY();
+
+            distance = (float) Math.sqrt(pathX * pathX + pathY * pathY);
+            changeX = pathX / distance;
+            changeY = pathY / distance;
         }
         if (seekingTarget) {
             if (Math.abs(coco.getX() - targetXYZ.x + coco.getWidth() / 2) < 5
                     & Math.abs(coco.getY() - targetXYZ.y + coco.getHeight() / 2) < 5) {
                 seekingTarget = false;
             } else {
-
-                float pathX = targetXYZ.x - coco.getWidth() / 2 - coco.getX();
-                float pathY = targetXYZ.y - coco.getHeight() / 2 - coco.getY();
-
-                float distance = (float) Math.sqrt(pathX * pathX + pathY * pathY);
-                float changeX = pathX / distance;
-                float changeY = pathY / distance;
 
                 coco.setX(coco.getX() + changeX * Constants.SPEED * Gdx.graphics.getDeltaTime());
                 coco.setY(coco.getY() + changeY * Constants.SPEED * Gdx.graphics.getDeltaTime());
