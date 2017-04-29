@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 
@@ -24,17 +25,24 @@ public class CocoWiggler extends ApplicationAdapter {
     private Sprite coco;
     private Sprite grass;
     private float rot;
-    private boolean isPressingLeft;
-    private boolean isPressingRight;
-    private boolean isPressingUp;
-    private boolean isPressingDown;
+    private boolean pressingLeft;
+    private boolean pressingRight;
+    private boolean pressingUp;
+    private boolean pressingDown;
+    private boolean seekingTarget;
+    private boolean facingLeft;
+    private boolean facingRight;
+    private Vector3 targetXYZ;
 
     @Override
     public void create() {
-        isPressingLeft = false;
-        isPressingRight = false;
-        isPressingUp = false;
-        isPressingDown = false;
+        pressingLeft = false;
+        pressingRight = false;
+        pressingUp = false;
+        pressingDown = false;
+
+        seekingTarget = false;
+        targetXYZ = new Vector3();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
@@ -97,16 +105,19 @@ public class CocoWiggler extends ApplicationAdapter {
 
         batch.end();
 
-        isPressingLeft = Gdx.input.isKeyPressed(Input.Keys.LEFT);
-        isPressingRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
-        isPressingUp = Gdx.input.isKeyPressed(Input.Keys.UP);
-        isPressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        // Movement controls
 
-        if (isPressingLeft) {
-            if (isPressingUp) {
+        // Keyboard movement
+        pressingLeft = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        pressingRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+        pressingUp = Gdx.input.isKeyPressed(Input.Keys.UP);
+        pressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+
+        if (pressingLeft) {
+            if (pressingUp) {
                 coco.setX(coco.getX() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
                 coco.setY(coco.getY() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-            } else if (isPressingDown) {
+            } else if (pressingDown) {
                 coco.setX(coco.getX() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
                 coco.setY(coco.getY() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
 
@@ -114,11 +125,11 @@ public class CocoWiggler extends ApplicationAdapter {
                 coco.setX(coco.getX() - Constants.SPEED * Gdx.graphics.getDeltaTime());
             }
         }
-        if (isPressingRight) {
-            if (isPressingUp) {
+        if (pressingRight) {
+            if (pressingUp) {
                 coco.setX(coco.getX() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
                 coco.setY(coco.getY() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-            } else if (isPressingDown) {
+            } else if (pressingDown) {
                 coco.setX(coco.getX() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
                 coco.setY(coco.getY() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
 
@@ -126,11 +137,47 @@ public class CocoWiggler extends ApplicationAdapter {
                 coco.setX(coco.getX() + Constants.SPEED * Gdx.graphics.getDeltaTime());
             }
         }
-        if (isPressingUp & !isPressingLeft & !isPressingRight) {
+        if (pressingUp & !pressingLeft & !pressingRight) {
             coco.setY(coco.getY() + Constants.SPEED * Gdx.graphics.getDeltaTime());
         }
-        if (isPressingDown & !isPressingLeft & !isPressingRight) {
+        if (pressingDown & !pressingLeft & !pressingRight) {
             coco.setY(coco.getY() - Constants.SPEED * Gdx.graphics.getDeltaTime());
+        }
+
+        // Mouse/touch-screen movement
+        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
+            seekingTarget = true;
+            camera.unproject(targetXYZ.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            if (targetXYZ.x < coco.getWidth() / 2) {
+                targetXYZ.x = coco.getWidth() / 2;
+            }
+            if (targetXYZ.x > Constants.APP_WIDTH - coco.getWidth() / 2) {
+                targetXYZ.x = Constants.APP_WIDTH - coco.getWidth() / 2;
+            }
+            if (targetXYZ.y < coco.getHeight() / 2) {
+                targetXYZ.y = coco.getHeight() / 2;
+            }
+            if (targetXYZ.y > Constants.APP_HEIGHT - coco.getHeight() / 2) {
+                targetXYZ.y = Constants.APP_HEIGHT - coco.getHeight() / 2;
+            }
+        }
+        if (seekingTarget) {
+            if (Math.abs(coco.getX() - targetXYZ.x + coco.getWidth() / 2) < 5
+                    & Math.abs(coco.getY() - targetXYZ.y + coco.getHeight() / 2) < 5) {
+                seekingTarget = false;
+            } else {
+
+                float pathX = targetXYZ.x - coco.getWidth() / 2 - coco.getX();
+                float pathY = targetXYZ.y - coco.getHeight() / 2 - coco.getY();
+
+                float distance = (float) Math.sqrt(pathX * pathX + pathY * pathY);
+                float changeX = pathX / distance;
+                float changeY = pathY / distance;
+
+                coco.setX(coco.getX() + changeX * Constants.SPEED * Gdx.graphics.getDeltaTime());
+                coco.setY(coco.getY() + changeY * Constants.SPEED * Gdx.graphics.getDeltaTime());
+            }
+
         }
     }
 
