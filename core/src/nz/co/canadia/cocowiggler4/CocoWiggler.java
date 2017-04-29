@@ -30,7 +30,6 @@ public class CocoWiggler extends ApplicationAdapter {
     private boolean pressingUp;
     private boolean pressingDown;
     private boolean seekingTarget;
-    private boolean facingLeft;
     private boolean facingRight;
     private Vector3 targetXYZ;
 
@@ -40,6 +39,7 @@ public class CocoWiggler extends ApplicationAdapter {
         pressingRight = false;
         pressingUp = false;
         pressingDown = false;
+        facingRight = false;
 
         seekingTarget = false;
         targetXYZ = new Vector3();
@@ -114,6 +114,10 @@ public class CocoWiggler extends ApplicationAdapter {
         pressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN);
 
         if (pressingLeft) {
+            if (facingRight) {
+                facingRight = false;
+                coco.setFlip(facingRight, false);
+            }
             if (pressingUp) {
                 coco.setX(coco.getX() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
                 coco.setY(coco.getY() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
@@ -126,6 +130,10 @@ public class CocoWiggler extends ApplicationAdapter {
             }
         }
         if (pressingRight) {
+            if (!facingRight) {
+                facingRight = true;
+                coco.setFlip(facingRight, false);
+            }
             if (pressingUp) {
                 coco.setX(coco.getX() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
                 coco.setY(coco.getY() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
