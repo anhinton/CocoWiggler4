@@ -142,6 +142,7 @@ class Coco {
         bitmap.dispose();
     }
 
+    // This method is used to make Coco move towards a target select by touching clicking
     private void move() {
         // calculate distance along adjacent and opposite sides
         float pathX = target.x - sprite.getWidth() / 2 - sprite.getX();

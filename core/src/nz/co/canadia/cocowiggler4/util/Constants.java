@@ -1,7 +1,7 @@
 package nz.co.canadia.cocowiggler4.util;
 
 /**
- * Created by ashley on 25/04/17.
+ * Some things should be constant
  */
 
 public class Constants {
@@ -11,5 +11,6 @@ public class Constants {
     public static final int APP_HEIGHT = 600;
 
     public static final float SPEED = 200;
+    // ANGLE_SPEED is the change in x/y when moving both vertically and horizontally
     public static final float ANGLE_SPEED = (float) Math.sqrt(SPEED * SPEED / 2);
 }
