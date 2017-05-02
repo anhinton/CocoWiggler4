@@ -8,20 +8,20 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 /**
- * This is just the background image. Doesn't do much, but it knows it loves you.
+ * Coco makes a lot of these, and eats about half of them.
  */
 
-class Background {
+class Poo {
     private Texture bitmap;
     private Sprite sprite;
 
-    Background(AssetManager manager) {
-        bitmap = manager.get("grass.png", Texture.class);
-        TextureRegion grassRegion = new TextureRegion(bitmap, 0, 0, bitmap.getWidth(),
+    Poo(AssetManager manager) {
+        bitmap = manager.get("poo01.png", Texture.class);
+        TextureRegion region = new TextureRegion(bitmap, 0, 0, bitmap.getWidth(),
                 bitmap.getHeight());
-        sprite = new Sprite(grassRegion);
-        sprite.setOrigin(0, 0);
-        sprite.setPosition(0, 0);
+        sprite = new Sprite(region);
+        sprite.setOrigin(bitmap.getWidth() / 2, bitmap.getHeight() / 2);
+        sprite.setPosition(50, 50);
     }
 
     void draw(SpriteBatch batch) {

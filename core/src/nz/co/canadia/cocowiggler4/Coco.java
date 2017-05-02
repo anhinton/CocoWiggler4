@@ -2,6 +2,7 @@ package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -9,6 +10,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 
 import nz.co.canadia.cocowiggler4.util.Constants;
 
@@ -28,7 +30,7 @@ class Coco {
     private boolean facingRight;
     private Vector3 target;
 
-    Coco() {
+    Coco (AssetManager manager, Array<Poo> poos) {
         // initialize variables
         pressingLeft = false;
         pressingRight = false;
@@ -40,14 +42,15 @@ class Coco {
         moving = false;
         target = new Vector3();
 
-        bitmap = new Texture(Gdx.files.internal("coco.png"));
-        bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        bitmap = manager.get("coco.png", Texture.class);
         TextureRegion region = new TextureRegion(bitmap, 0, 0, bitmap.getWidth(),
                 bitmap.getHeight());
         sprite = new Sprite(region);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         sprite.setPosition(Constants.APP_WIDTH / 2 - bitmap.getWidth() / 2,
                 Constants.APP_HEIGHT / 2 - bitmap.getHeight() / 2);
+
+        spawnPoo(manager, poos);
     }
 
     void update(Camera camera) {
@@ -173,6 +176,11 @@ class Coco {
         final float shakeAmplitudeInDegrees = 5.0f;
         float shake = MathUtils.sin(rot) * shakeAmplitudeInDegrees;
         sprite.setRotation(shake);
+    }
+
+    private void spawnPoo(AssetManager manager, Array<Poo> poos) {
+        Poo poo = new Poo(manager);
+        poos.add(poo);
     }
 
 }
