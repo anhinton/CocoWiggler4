@@ -50,7 +50,7 @@ public class CocoWiggler extends ApplicationAdapter {
 
         poos = new Array<Poo>();
 
-        coco = new Coco(manager, poos);
+        coco = new Coco(manager);
 
         background = new Background(manager);
     }
@@ -66,7 +66,7 @@ public class CocoWiggler extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         // update Coco
-        coco.update(camera);
+        coco.update(camera, manager, poos);
 
         // start sprite batch
         batch.begin();
@@ -92,6 +92,9 @@ public class CocoWiggler extends ApplicationAdapter {
         batch.dispose();
         coco.dispose();
         manager.dispose();
+        for (Poo poo: poos) {
+            poo.dispose();
+        }
     }
 
     @Override

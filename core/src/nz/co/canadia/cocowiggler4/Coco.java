@@ -11,6 +11,7 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.TimeUtils;
 
 import nz.co.canadia.cocowiggler4.util.Constants;
 
@@ -29,8 +30,9 @@ class Coco {
     private boolean moving;
     private boolean facingRight;
     private Vector3 target;
+    private long lastPooTime;
 
-    Coco (AssetManager manager, Array<Poo> poos) {
+    Coco (AssetManager manager) {
         // initialize variables
         pressingLeft = false;
         pressingRight = false;
@@ -50,10 +52,14 @@ class Coco {
         sprite.setPosition(Constants.APP_WIDTH / 2 - bitmap.getWidth() / 2,
                 Constants.APP_HEIGHT / 2 - bitmap.getHeight() / 2);
 
-        spawnPoo(manager, poos);
+        lastPooTime = TimeUtils.nanoTime();
     }
 
-    void update(Camera camera) {
+    void update(Camera camera, AssetManager manager, Array<Poo> poos) {
+        if (TimeUtils.nanoTime() - lastPooTime > Constants.POO_TIME) {
+            spawnPoo(manager, poos);
+        }
+
         // Movement controls
 
         // Keyboard movement
@@ -181,6 +187,7 @@ class Coco {
     private void spawnPoo(AssetManager manager, Array<Poo> poos) {
         Poo poo = new Poo(manager);
         poos.add(poo);
+        lastPooTime = TimeUtils.nanoTime();
     }
 
 }

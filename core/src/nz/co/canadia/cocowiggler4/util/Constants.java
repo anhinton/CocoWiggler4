@@ -1,5 +1,7 @@
 package nz.co.canadia.cocowiggler4.util;
 
+import com.badlogic.gdx.utils.TimeUtils;
+
 /**
  * Some things should be constant
  */
@@ -13,4 +15,6 @@ public class Constants {
     public static final float SPEED = 200;
     // ANGLE_SPEED is the change in x/y when moving both vertically and horizontally
     public static final float ANGLE_SPEED = (float) Math.sqrt(SPEED * SPEED / 2);
+
+    public static final long POO_TIME = TimeUtils.millisToNanos(5000);
 }
