@@ -16,5 +16,6 @@ public class Constants {
     // ANGLE_SPEED is the change in x/y when moving both vertically and horizontally
     public static final float ANGLE_SPEED = (float) Math.sqrt(SPEED * SPEED / 2);
 
-    public static final long POO_TIME = TimeUtils.millisToNanos(5000);
+    public static final long POO_TIME_MIN = TimeUtils.millisToNanos(1000);
+    public static final long POO_TIME_MAX = TimeUtils.millisToNanos(5000);
 }
