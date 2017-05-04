@@ -29,8 +29,11 @@ class Coco {
     private boolean pressingDown;
     private boolean moving;
     private boolean facingRight;
+    private float changeX;
+    private float changeY;
     private Vector3 target;
     private long lastPooTime;
+    private long pooDelay;
 
     Coco (AssetManager manager) {
         // initialize variables
@@ -43,6 +46,8 @@ class Coco {
 
         moving = false;
         target = new Vector3();
+        changeX = 0;
+        changeY = 0;
 
         bitmap = manager.get("coco.png", Texture.class);
         TextureRegion region = new TextureRegion(bitmap, 0, 0, bitmap.getWidth(),
@@ -53,10 +58,12 @@ class Coco {
                 Constants.APP_HEIGHT / 2 - bitmap.getHeight() / 2);
 
         lastPooTime = TimeUtils.nanoTime();
+        pooDelay = (long) MathUtils.randomTriangular(Constants.POO_TIME_MIN,
+                Constants.POO_TIME_MAX);
     }
 
     void update(Camera camera, AssetManager manager, Array<Poo> poos) {
-        if (TimeUtils.nanoTime() - lastPooTime > Constants.POO_TIME) {
+        if (TimeUtils.nanoTime() - lastPooTime > pooDelay) {
             spawnPoo(manager, poos);
         }
 
@@ -67,43 +74,6 @@ class Coco {
         pressingRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
         pressingUp = Gdx.input.isKeyPressed(Input.Keys.UP);
         pressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN);
-
-        if (pressingLeft) {
-            if (facingRight) {
-                facingRight = false;
-            }
-            if (pressingUp) {
-                sprite.setX(sprite.getX() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-                sprite.setY(sprite.getY() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-            } else if (pressingDown) {
-                sprite.setX(sprite.getX() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-                sprite.setY(sprite.getY() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-
-            } else {
-                sprite.setX(sprite.getX() - Constants.SPEED * Gdx.graphics.getDeltaTime());
-            }
-        }
-        if (pressingRight) {
-            if (!facingRight) {
-                facingRight = true;
-            }
-            if (pressingUp) {
-                sprite.setX(sprite.getX() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-                sprite.setY(sprite.getY() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-            } else if (pressingDown) {
-                sprite.setX(sprite.getX() + Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-                sprite.setY(sprite.getY() - Constants.ANGLE_SPEED * Gdx.graphics.getDeltaTime());
-
-            } else {
-                sprite.setX(sprite.getX() + Constants.SPEED * Gdx.graphics.getDeltaTime());
-            }
-        }
-        if (pressingUp & !pressingLeft & !pressingRight) {
-            sprite.setY(sprite.getY() + Constants.SPEED * Gdx.graphics.getDeltaTime());
-        }
-        if (pressingDown & !pressingLeft & !pressingRight) {
-            sprite.setY(sprite.getY() - Constants.SPEED * Gdx.graphics.getDeltaTime());
-        }
 
         // Mouse/touch-screen movement
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -117,18 +87,10 @@ class Coco {
             if (target.y < sprite.getHeight() / 2) target.y = sprite.getHeight() / 2;
             if (target.y > Constants.APP_HEIGHT - sprite.getHeight() / 2)
                 target.y = Constants.APP_HEIGHT - sprite.getHeight() / 2;
-
-
         }
-        if (moving) {
-            if (Math.abs(sprite.getX() - target.x + sprite.getWidth() / 2) < 5
-                    & Math.abs(sprite.getY() - target.y + sprite.getHeight() / 2) < 5) {
-                moving = false;
-            } else {
-                move();
-            }
 
-        }
+        // perform movement
+        move();
 
         // don't let Coco escape
         if (sprite.getX() < 0) sprite.setX(0);
@@ -153,27 +115,75 @@ class Coco {
 
     // This method is used to make Coco move towards a target select by touching clicking
     private void move() {
-        // calculate distance along adjacent and opposite sides
-        float pathX = target.x - sprite.getWidth() / 2 - sprite.getX();
-        float pathY = target.y - sprite.getHeight() / 2 - sprite.getY();
+        changeX = 0;
+        changeY = 0;
 
-        // flip Coco on direction change
-        if (pathX < 0 && facingRight) {
-            facingRight = false;
-        }
-        if (pathX > 0 && !facingRight) {
-            facingRight = true;
+        if (moving) {
+            if (Math.abs(sprite.getX() - target.x + sprite.getWidth() / 2) < 5
+                    & Math.abs(sprite.getY() - target.y + sprite.getHeight() / 2) < 5) {
+                moving = false;
+            } else {
+                // calculate distance along adjacent and opposite sides
+                float pathX = target.x - sprite.getWidth() / 2 - sprite.getX();
+                float pathY = target.y - sprite.getHeight() / 2 - sprite.getY();
+
+                // flip Coco on direction change
+                if (pathX < 0 && facingRight) {
+                    facingRight = false;
+                }
+                if (pathX > 0 && !facingRight) {
+                    facingRight = true;
+                }
+
+                // calculate distance along hypotenuse
+                float distance = (float) Math.sqrt(pathX * pathX + pathY * pathY);
+                // change is ratio between side an hypotenuse
+                changeX = pathX / distance;
+                changeY = pathY / distance;
+            }
         }
 
-        // calculate distance along hypotenuse
-        float distance = (float) Math.sqrt(pathX * pathX + pathY * pathY);
-        // change is ratio between side an hypotenuse
-        float changeX = pathX / distance;
-        float changeY = pathY / distance;
+        if (pressingLeft) {
+            if (facingRight) {
+                facingRight = false;
+            }
+            if (pressingUp) {
+                changeX = -1;
+                changeY = 1;
+            } else if (pressingDown) {
+                changeX = -1;
+                changeY = -1;
+
+            } else {
+                changeX = -1;
+            }
+        }
+        if (pressingRight) {
+            if (!facingRight) {
+                facingRight = true;
+            }
+            if (pressingUp) {
+                changeX = 1;
+                changeY = 1;
+            } else if (pressingDown) {
+                changeX = 1;
+                changeY = -1;
+
+            } else {
+                changeX = 1;
+            }
+        }
+        if (pressingUp & !pressingLeft & !pressingRight) {
+            changeY =  1;
+        }
+        if (pressingDown & !pressingLeft & !pressingRight) {
+            changeY = -1;
+        }
 
         // move Coco
         sprite.setX(sprite.getX() + changeX * Constants.SPEED * Gdx.graphics.getDeltaTime());
         sprite.setY(sprite.getY() + changeY * Constants.SPEED * Gdx.graphics.getDeltaTime());
+
     }
 
     private void rotate() {
@@ -185,9 +195,19 @@ class Coco {
     }
 
     private void spawnPoo(AssetManager manager, Array<Poo> poos) {
-        Poo poo = new Poo(manager);
+        float pooX;
+        if (facingRight) {
+            pooX = sprite.getX() + sprite.getWidth() / 9;
+        } else {
+            pooX = sprite.getX() + sprite.getWidth() * 4 / 5;
+        }
+        float pooY = sprite.getY() + sprite.getHeight() / 5;
+
+        Poo poo = new Poo(manager, pooX, pooY);
         poos.add(poo);
         lastPooTime = TimeUtils.nanoTime();
+        pooDelay = (long) MathUtils.randomTriangular(Constants.POO_TIME_MIN,
+                Constants.POO_TIME_MAX);
     }
 
 }

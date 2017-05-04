@@ -18,7 +18,7 @@ class Poo {
     private Texture bitmap;
     private Sprite sprite;
 
-    Poo(AssetManager manager) {
+    Poo(AssetManager manager, float x, float y) {
         switch(MathUtils.random(1, 9)) {
             case 1:
                 bitmap = manager.get("poo01.png", Texture.class);
@@ -52,9 +52,7 @@ class Poo {
                 bitmap.getHeight());
         sprite = new Sprite(region);
         sprite.setOrigin(bitmap.getWidth() / 2, bitmap.getHeight() / 2);
-        int pooX = MathUtils.random(0, Constants.APP_WIDTH - bitmap.getWidth());
-        int pooY = MathUtils.random(0, Constants.APP_HEIGHT - bitmap.getHeight());
-        sprite.setPosition(pooX, pooY);
+        sprite.setPosition(x, y);
         sprite.setRotation(MathUtils.random(0, 359));
     }
 
