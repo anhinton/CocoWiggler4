@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
@@ -31,6 +32,7 @@ class Coco {
     private boolean facingRight;
     private float changeX;
     private float changeY;
+    private Vector2 headCentre;
     private Vector3 target;
     private long lastPooTime;
     private long pooDelay;
@@ -43,6 +45,7 @@ class Coco {
         pressingDown = false;
 
         facingRight = false;
+        headCentre = new Vector2();
 
         moving = false;
         target = new Vector3();
@@ -62,6 +65,16 @@ class Coco {
                 Constants.POO_TIME_MAX);
     }
 
+    private void calculateHeadCentre() {
+        if (facingRight) {
+            headCentre.x = sprite.getWidth() * 5 / 6;
+            headCentre.y = sprite.getHeight() / 5;
+        } else {
+            headCentre.x = sprite.getWidth() / 6;
+            headCentre.y = sprite.getHeight() / 5;
+        }
+    }
+
     void update(Camera camera, AssetManager manager, Array<Poo> poos) {
         if (TimeUtils.nanoTime() - lastPooTime > pooDelay) {
             spawnPoo(manager, poos);
@@ -79,17 +92,10 @@ class Coco {
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             moving = true;
             camera.unproject(target.set(Gdx.input.getX(), Gdx.input.getY(), 0));
-
-            // stop target from clipping Coco outside
-            if (target.x < sprite.getWidth() / 2) target.x = sprite.getWidth() / 2;
-            if (target.x > Constants.APP_WIDTH - sprite.getWidth() / 2)
-                target.x = Constants.APP_WIDTH - sprite.getWidth() / 2;
-            if (target.y < sprite.getHeight() / 2) target.y = sprite.getHeight() / 2;
-            if (target.y > Constants.APP_HEIGHT - sprite.getHeight() / 2)
-                target.y = Constants.APP_HEIGHT - sprite.getHeight() / 2;
         }
 
         // perform movement
+        calculateHeadCentre();
         move();
 
         // don't let Coco escape
@@ -99,6 +105,14 @@ class Coco {
         if (sprite.getY() < 0) sprite.setY(0);
         if (sprite.getY() > Constants.APP_HEIGHT - sprite.getHeight())
             sprite.setY(Constants.APP_HEIGHT - sprite.getHeight());
+
+        // stop target from clipping Coco outside
+        if (target.x < headCentre.x) target.x = headCentre.x;
+        if (target.x > Constants.APP_WIDTH - sprite.getWidth() + headCentre.x)
+            target.x = Constants.APP_WIDTH - sprite.getWidth() + headCentre.x;
+        if (target.y < headCentre.y) target.y = headCentre.y;
+        if (target.y > Constants.APP_HEIGHT - sprite.getHeight() + headCentre.y)
+            target.y = Constants.APP_HEIGHT - sprite.getHeight() + headCentre.y;
 
         // set flip
         sprite.setFlip(facingRight, false);
@@ -119,19 +133,19 @@ class Coco {
         changeY = 0;
 
         if (moving) {
-            if (Math.abs(sprite.getX() - target.x + sprite.getWidth() / 2) < 5
-                    & Math.abs(sprite.getY() - target.y + sprite.getHeight() / 2) < 5) {
+            if (Math.abs(sprite.getX() + headCentre.x - target.x) < 2
+                    && Math.abs(sprite.getY() + headCentre.y - target.y) < 2) {
                 moving = false;
             } else {
                 // calculate distance along adjacent and opposite sides
-                float pathX = target.x - sprite.getWidth() / 2 - sprite.getX();
-                float pathY = target.y - sprite.getHeight() / 2 - sprite.getY();
+                float pathX = target.x - sprite.getX() - headCentre.x;
+                float pathY = target.y - sprite.getY() - headCentre.y;
 
                 // flip Coco on direction change
-                if (pathX < 0 && facingRight) {
+                if (pathX < -sprite.getWidth() * Constants.FLIP_THRESHOLD && facingRight) {
                     facingRight = false;
                 }
-                if (pathX > 0 && !facingRight) {
+                if (pathX > sprite.getWidth() * Constants.FLIP_THRESHOLD && !facingRight) {
                     facingRight = true;
                 }
 
@@ -148,14 +162,14 @@ class Coco {
                 facingRight = false;
             }
             if (pressingUp) {
-                changeX = -1;
-                changeY = 1;
+                changeX = -Constants.ANGLE_SPEED;
+                changeY = Constants.ANGLE_SPEED;
             } else if (pressingDown) {
-                changeX = -1;
-                changeY = -1;
+                changeX = -Constants.ANGLE_SPEED;
+                changeY = -Constants.ANGLE_SPEED;
 
             } else {
-                changeX = -1;
+                changeX = -Constants.SPEED;
             }
         }
         if (pressingRight) {
@@ -163,26 +177,26 @@ class Coco {
                 facingRight = true;
             }
             if (pressingUp) {
-                changeX = 1;
-                changeY = 1;
+                changeX = Constants.ANGLE_SPEED;
+                changeY = Constants.ANGLE_SPEED;
             } else if (pressingDown) {
-                changeX = 1;
-                changeY = -1;
+                changeX = Constants.ANGLE_SPEED;
+                changeY = -Constants.ANGLE_SPEED;
 
             } else {
-                changeX = 1;
+                changeX = Constants.SPEED;
             }
         }
         if (pressingUp & !pressingLeft & !pressingRight) {
-            changeY =  1;
+            changeY =  Constants.SPEED;
         }
         if (pressingDown & !pressingLeft & !pressingRight) {
-            changeY = -1;
+            changeY = -Constants.SPEED;
         }
 
         // move Coco
-        sprite.setX(sprite.getX() + changeX * Constants.SPEED * Gdx.graphics.getDeltaTime());
-        sprite.setY(sprite.getY() + changeY * Constants.SPEED * Gdx.graphics.getDeltaTime());
+        sprite.setX(sprite.getX() + changeX * Gdx.graphics.getDeltaTime());
+        sprite.setY(sprite.getY() + changeY * Gdx.graphics.getDeltaTime());
 
     }
 

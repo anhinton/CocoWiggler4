@@ -18,4 +18,6 @@ public class Constants {
 
     public static final long POO_TIME_MIN = TimeUtils.millisToNanos(1000);
     public static final long POO_TIME_MAX = TimeUtils.millisToNanos(5000);
+
+    public static final float FLIP_THRESHOLD = 4f / 7;
 }
