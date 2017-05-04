@@ -52,7 +52,7 @@ class Coco {
         changeX = 0;
         changeY = 0;
 
-        bitmap = manager.get("coco.png", Texture.class);
+        bitmap = manager.get("graphics/coco.png", Texture.class);
         TextureRegion region = new TextureRegion(bitmap, 0, 0, bitmap.getWidth(),
                 bitmap.getHeight());
         sprite = new Sprite(region);
@@ -87,6 +87,15 @@ class Coco {
         pressingRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
         pressingUp = Gdx.input.isKeyPressed(Input.Keys.UP);
         pressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        // cancel opposites
+        if (pressingLeft && pressingRight) {
+            pressingLeft = false;
+            pressingRight = false;
+        }
+        if (pressingUp && pressingDown) {
+            pressingUp = false;
+            pressingDown = false;
+        }
 
         // Mouse/touch-screen movement
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
@@ -152,8 +161,8 @@ class Coco {
                 // calculate distance along hypotenuse
                 float distance = (float) Math.sqrt(pathX * pathX + pathY * pathY);
                 // change is ratio between side an hypotenuse
-                changeX = pathX / distance;
-                changeY = pathY / distance;
+                changeX = pathX / distance * Constants.SPEED;
+                changeY = pathY / distance * Constants.SPEED;
             }
         }
 
@@ -192,6 +201,14 @@ class Coco {
         }
         if (pressingDown & !pressingLeft & !pressingRight) {
             changeY = -Constants.SPEED;
+        }
+
+        // clamp speed
+        if (Math.abs(changeX) > Constants.SPEED) {
+            changeX = MathUtils.clamp(changeX, -Constants.SPEED, Constants.SPEED);
+        }
+        if (Math.abs(changeY) > Constants.SPEED) {
+            changeY = MathUtils.clamp(changeY, -Constants.SPEED, Constants.SPEED);
         }
 
         // move Coco

@@ -29,17 +29,17 @@ public class CocoWiggler extends ApplicationAdapter {
         TextureLoader.TextureParameter param = new TextureLoader.TextureParameter();
         param.minFilter = Texture.TextureFilter.Linear;
         param.magFilter = Texture.TextureFilter.Linear;
-        manager.load("coco.png", Texture.class, param);
-        manager.load("grass.png", Texture.class, param);
-        manager.load("poo01.png", Texture.class, param);
-        manager.load("poo02.png", Texture.class, param);
-        manager.load("poo03.png", Texture.class, param);
-        manager.load("poo04.png", Texture.class, param);
-        manager.load("poo05.png", Texture.class, param);
-        manager.load("poo06.png", Texture.class, param);
-        manager.load("poo07.png", Texture.class, param);
-        manager.load("poo08.png", Texture.class, param);
-        manager.load("poo09.png", Texture.class, param);
+        manager.load("graphics/coco.png", Texture.class, param);
+        manager.load("graphics/grass.png", Texture.class, param);
+        manager.load("graphics/poo01.png", Texture.class, param);
+        manager.load("graphics/poo02.png", Texture.class, param);
+        manager.load("graphics/poo03.png", Texture.class, param);
+        manager.load("graphics/poo04.png", Texture.class, param);
+        manager.load("graphics/poo05.png", Texture.class, param);
+        manager.load("graphics/poo06.png", Texture.class, param);
+        manager.load("graphics/poo07.png", Texture.class, param);
+        manager.load("graphics/poo08.png", Texture.class, param);
+        manager.load("graphics/poo09.png", Texture.class, param);
         manager.finishLoading();
 
         camera = new OrthographicCamera();
