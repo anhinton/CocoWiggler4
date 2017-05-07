@@ -54,7 +54,7 @@ public class CocoWiggler extends ApplicationAdapter {
         background = new Background();
 
         // DEBUG GRAPHICS
-        debug = false;
+        debug = Constants.GRAPHICS_DEBUG;
     }
 
     @Override
