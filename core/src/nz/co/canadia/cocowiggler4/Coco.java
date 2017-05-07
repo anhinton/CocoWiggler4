@@ -37,7 +37,7 @@ class Coco {
     private long lastPooTime;
     private long pooDelay;
 
-    Coco (AssetManager manager) {
+    Coco () {
         // initialize variables
         pressingLeft = false;
         pressingRight = false;
@@ -52,7 +52,6 @@ class Coco {
         changeX = 0;
         changeY = 0;
 
-//        bitmap = manager.get("graphics/coco.png", Texture.class);
         bitmap = new Texture("graphics/coco.png");
         bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion region = new TextureRegion(bitmap, 0, 0, bitmap.getWidth(),

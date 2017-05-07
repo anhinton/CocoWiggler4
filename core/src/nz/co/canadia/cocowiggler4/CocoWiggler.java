@@ -2,8 +2,6 @@ package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
-import com.badlogic.gdx.assets.loaders.TextureLoader;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -20,7 +18,6 @@ public class CocoWiggler extends ApplicationAdapter {
     private Viewport viewport;
     private Coco coco;
     private Background background;
-    private AssetManager manager;
     private Array<Texture> pooBitmaps;
     private Array<Poo> poos;
 
@@ -39,22 +36,6 @@ public class CocoWiggler extends ApplicationAdapter {
         for (Texture bitmap: pooBitmaps) {
             bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         }
-//        manager = new AssetManager();
-//        TextureLoader.TextureParameter param = new TextureLoader.TextureParameter();
-//        param.minFilter = Texture.TextureFilter.Linear;
-//        param.magFilter = Texture.TextureFilter.Linear;
-//        manager.load("graphics/coco.png", Texture.class, param);
-//        manager.load("graphics/grass.png", Texture.class, param);
-//        manager.load("graphics/poo01.png", Texture.class, param);
-//        manager.load("graphics/poo02.png", Texture.class, param);
-//        manager.load("graphics/poo03.png", Texture.class, param);
-//        manager.load("graphics/poo04.png", Texture.class, param);
-//        manager.load("graphics/poo05.png", Texture.class, param);
-//        manager.load("graphics/poo06.png", Texture.class, param);
-//        manager.load("graphics/poo07.png", Texture.class, param);
-//        manager.load("graphics/poo08.png", Texture.class, param);
-//        manager.load("graphics/poo09.png", Texture.class, param);
-//        manager.finishLoading();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
@@ -64,9 +45,9 @@ public class CocoWiggler extends ApplicationAdapter {
 
         poos = new Array<Poo>();
 
-        coco = new Coco(manager);
+        coco = new Coco();
 
-        background = new Background(manager);
+        background = new Background();
     }
 
     @Override

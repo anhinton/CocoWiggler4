@@ -1,7 +1,5 @@
 package nz.co.canadia.cocowiggler4;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,8 +13,7 @@ class Background {
     private Texture bitmap;
     private Sprite sprite;
 
-    Background(AssetManager manager) {
-//        bitmap = manager.get("graphics/grass.png", Texture.class);
+    Background() {
         bitmap = new Texture("graphics/grass.png");
         bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion grassRegion = new TextureRegion(bitmap, 0, 0, bitmap.getWidth(),
