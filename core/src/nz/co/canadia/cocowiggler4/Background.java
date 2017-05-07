@@ -16,7 +16,9 @@ class Background {
     private Sprite sprite;
 
     Background(AssetManager manager) {
-        bitmap = manager.get("graphics/grass.png", Texture.class);
+//        bitmap = manager.get("graphics/grass.png", Texture.class);
+        bitmap = new Texture("graphics/grass.png");
+        bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion grassRegion = new TextureRegion(bitmap, 0, 0, bitmap.getWidth(),
                 bitmap.getHeight());
         sprite = new Sprite(grassRegion);

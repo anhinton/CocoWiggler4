@@ -52,7 +52,9 @@ class Coco {
         changeX = 0;
         changeY = 0;
 
-        bitmap = manager.get("graphics/coco.png", Texture.class);
+//        bitmap = manager.get("graphics/coco.png", Texture.class);
+        bitmap = new Texture("graphics/coco.png");
+        bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
         TextureRegion region = new TextureRegion(bitmap, 0, 0, bitmap.getWidth(),
                 bitmap.getHeight());
         sprite = new Sprite(region);
@@ -75,9 +77,9 @@ class Coco {
         }
     }
 
-    void update(Camera camera, AssetManager manager, Array<Poo> poos) {
+    void update(Camera camera, Array<Texture> pooBitmaps, Array<Poo> poos) {
         if (TimeUtils.nanoTime() - lastPooTime > pooDelay) {
-            spawnPoo(manager, poos);
+            spawnPoo(pooBitmaps, poos);
         }
 
         // Movement controls
@@ -225,7 +227,7 @@ class Coco {
         sprite.setRotation(shake);
     }
 
-    private void spawnPoo(AssetManager manager, Array<Poo> poos) {
+    private void spawnPoo(Array<Texture> pooBitmaps, Array<Poo> poos) {
         float pooX;
         if (facingRight) {
             pooX = sprite.getX() + sprite.getWidth() / 9;
@@ -234,7 +236,7 @@ class Coco {
         }
         float pooY = sprite.getY() + sprite.getHeight() / 5;
 
-        Poo poo = new Poo(manager, pooX, pooY);
+        Poo poo = new Poo(pooBitmaps, pooX, pooY);
         poos.add(poo);
         lastPooTime = TimeUtils.nanoTime();
         pooDelay = (long) MathUtils.randomTriangular(Constants.POO_TIME_MIN,

@@ -21,26 +21,40 @@ public class CocoWiggler extends ApplicationAdapter {
     private Coco coco;
     private Background background;
     private AssetManager manager;
+    private Array<Texture> pooBitmaps;
     private Array<Poo> poos;
 
     @Override
     public void create() {
-        manager = new AssetManager();
-        TextureLoader.TextureParameter param = new TextureLoader.TextureParameter();
-        param.minFilter = Texture.TextureFilter.Linear;
-        param.magFilter = Texture.TextureFilter.Linear;
-        manager.load("graphics/coco.png", Texture.class, param);
-        manager.load("graphics/grass.png", Texture.class, param);
-        manager.load("graphics/poo01.png", Texture.class, param);
-        manager.load("graphics/poo02.png", Texture.class, param);
-        manager.load("graphics/poo03.png", Texture.class, param);
-        manager.load("graphics/poo04.png", Texture.class, param);
-        manager.load("graphics/poo05.png", Texture.class, param);
-        manager.load("graphics/poo06.png", Texture.class, param);
-        manager.load("graphics/poo07.png", Texture.class, param);
-        manager.load("graphics/poo08.png", Texture.class, param);
-        manager.load("graphics/poo09.png", Texture.class, param);
-        manager.finishLoading();
+        pooBitmaps = new Array<Texture>();
+        pooBitmaps.add(new Texture("graphics/poo01.png"));
+        pooBitmaps.add(new Texture("graphics/poo02.png"));
+        pooBitmaps.add(new Texture("graphics/poo03.png"));
+        pooBitmaps.add(new Texture("graphics/poo04.png"));
+        pooBitmaps.add(new Texture("graphics/poo05.png"));
+        pooBitmaps.add(new Texture("graphics/poo06.png"));
+        pooBitmaps.add(new Texture("graphics/poo07.png"));
+        pooBitmaps.add(new Texture("graphics/poo08.png"));
+        pooBitmaps.add(new Texture("graphics/poo09.png"));
+        for (Texture bitmap: pooBitmaps) {
+            bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        }
+//        manager = new AssetManager();
+//        TextureLoader.TextureParameter param = new TextureLoader.TextureParameter();
+//        param.minFilter = Texture.TextureFilter.Linear;
+//        param.magFilter = Texture.TextureFilter.Linear;
+//        manager.load("graphics/coco.png", Texture.class, param);
+//        manager.load("graphics/grass.png", Texture.class, param);
+//        manager.load("graphics/poo01.png", Texture.class, param);
+//        manager.load("graphics/poo02.png", Texture.class, param);
+//        manager.load("graphics/poo03.png", Texture.class, param);
+//        manager.load("graphics/poo04.png", Texture.class, param);
+//        manager.load("graphics/poo05.png", Texture.class, param);
+//        manager.load("graphics/poo06.png", Texture.class, param);
+//        manager.load("graphics/poo07.png", Texture.class, param);
+//        manager.load("graphics/poo08.png", Texture.class, param);
+//        manager.load("graphics/poo09.png", Texture.class, param);
+//        manager.finishLoading();
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
@@ -66,7 +80,7 @@ public class CocoWiggler extends ApplicationAdapter {
         batch.setProjectionMatrix(camera.combined);
 
         // update Coco
-        coco.update(camera, manager, poos);
+        coco.update(camera, pooBitmaps, poos);
 
         // start sprite batch
         batch.begin();
