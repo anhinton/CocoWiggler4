@@ -105,7 +105,9 @@ public class CocoWiggler extends ApplicationAdapter {
         background.dispose();
         batch.dispose();
         coco.dispose();
-        manager.dispose();
+        for (Texture bitmap: pooBitmaps) {
+            bitmap.dispose();
+        }
         for (Poo poo: poos) {
             poo.dispose();
         }
