@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -14,12 +15,14 @@ import nz.co.canadia.cocowiggler4.util.Constants;
 
 public class CocoWiggler extends ApplicationAdapter {
     private SpriteBatch batch;
+    private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
     private Viewport viewport;
     private Coco coco;
     private Background background;
     private Array<Texture> pooBitmaps;
     private Array<Poo> poos;
+    private boolean debug;
 
     @Override
     public void create() {
@@ -42,12 +45,16 @@ public class CocoWiggler extends ApplicationAdapter {
         viewport = new FitViewport(Constants.APP_WIDTH, Constants.APP_HEIGHT, camera);
 
         batch = new SpriteBatch();
+        shapeRenderer = new ShapeRenderer();
 
         poos = new Array<Poo>();
 
         coco = new Coco();
 
         background = new Background();
+
+        // DEBUG GRAPHICS
+        debug = false;
     }
 
     @Override
@@ -62,6 +69,13 @@ public class CocoWiggler extends ApplicationAdapter {
 
         // update Coco
         coco.update(camera, pooBitmaps, poos);
+
+        // flush eaten poos
+        for (int i = 0; i < poos.size; i++) {
+            if (poos.get(i).isEaten()) {
+                poos.removeIndex(i);
+            }
+        }
 
         // start sprite batch
         batch.begin();
@@ -79,6 +93,16 @@ public class CocoWiggler extends ApplicationAdapter {
 
         // end sprite batch
         batch.end();
+
+        // GRAPHICS DEBUGGING
+        if (debug) {
+            shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            coco.drawBounds(shapeRenderer);
+            for (Poo poo : poos) {
+                poo.drawBounds(shapeRenderer);
+            }
+            shapeRenderer.end();
+        }
     }
 
     @Override

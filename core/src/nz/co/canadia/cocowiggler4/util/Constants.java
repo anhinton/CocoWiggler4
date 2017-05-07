@@ -20,4 +20,6 @@ public class Constants {
     public static final long POO_TIME_MAX = TimeUtils.millisToNanos(5000);
 
     public static final float FLIP_THRESHOLD = 4f / 7;
+
+    public static final float MOUTH_RADIUS = 25f;
 }

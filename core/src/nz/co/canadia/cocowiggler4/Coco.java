@@ -2,12 +2,13 @@ package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -61,6 +62,8 @@ class Coco {
         sprite.setPosition(Constants.APP_WIDTH / 2 - bitmap.getWidth() / 2,
                 Constants.APP_HEIGHT / 2 - bitmap.getHeight() / 2);
 
+        calculateHeadCentre();
+
         lastPooTime = TimeUtils.nanoTime();
         pooDelay = (long) MathUtils.randomTriangular(Constants.POO_TIME_MIN,
                 Constants.POO_TIME_MAX);
@@ -76,9 +79,27 @@ class Coco {
         }
     }
 
+    private Circle getMouthBoundingCircle() {
+        return(new Circle(sprite.getX() + headCentre.x, sprite.getY() + headCentre.y,
+                sprite.getWidth() / 10));
+    }
+
     void update(Camera camera, Array<Texture> pooBitmaps, Array<Poo> poos) {
+        // where is my head at
+        calculateHeadCentre();
+
+        // poo if you need to
         if (TimeUtils.nanoTime() - lastPooTime > pooDelay) {
             spawnPoo(pooBitmaps, poos);
+        }
+
+        // eat poo if you can
+        for (Poo poo: poos) {
+            if (poo.getBoundingCircle().overlaps(getMouthBoundingCircle())){
+                if (poo.isEdible()) {
+                    poo.eatPoo();
+                }
+            }
         }
 
         // Movement controls
@@ -105,7 +126,6 @@ class Coco {
         }
 
         // perform movement
-        calculateHeadCentre();
         move();
 
         // don't let Coco escape
@@ -131,6 +151,11 @@ class Coco {
     void draw(SpriteBatch batch) {
         rotate();
         sprite.draw(batch);
+    }
+
+    void drawBounds(ShapeRenderer shapeRenderer) {
+        Circle bound = getMouthBoundingCircle();
+        shapeRenderer.circle(bound.x, bound.y, bound.radius);
     }
 
     void dispose() {
