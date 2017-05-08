@@ -40,6 +40,8 @@ class Coco {
     private Vector3 target;
     private long lastPooTime;
     private long pooDelay;
+    private int pooCount;
+    private int eatenCount;
 
     Coco () {
         // initialize variables
@@ -73,6 +75,9 @@ class Coco {
         lastPooTime = TimeUtils.nanoTime();
         pooDelay = (long) MathUtils.randomTriangular(Constants.POO_TIME_MIN,
                 Constants.POO_TIME_MAX);
+
+        pooCount = 0;
+        eatenCount = 0;
     }
 
     private void calculateHeadCentre() {
@@ -97,6 +102,7 @@ class Coco {
         // poo if you need to
         if (TimeUtils.nanoTime() - lastPooTime > pooDelay) {
             spawnPoo(pooBitmaps, poos);
+            pooCount++;
         }
 
         // eat poo if you can
@@ -105,6 +111,7 @@ class Coco {
                 if (poo.isEdible()) {
                     poo.eatPoo();
                     chomp.play(1.0f);
+                    eatenCount++;
                 }
             }
         }
@@ -282,4 +289,11 @@ class Coco {
         pop.play(1.0f);
     }
 
+    int getPooCount() {
+        return pooCount;
+    }
+
+    int getEatenCount() {
+        return eatenCount;
+    }
 }

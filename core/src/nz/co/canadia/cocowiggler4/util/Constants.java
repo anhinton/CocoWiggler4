@@ -1,5 +1,6 @@
 package nz.co.canadia.cocowiggler4.util;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.TimeUtils;
 
 /**
@@ -11,6 +12,9 @@ public class Constants {
 
     public static final int APP_WIDTH = 800;
     public static final int APP_HEIGHT = 600;
+
+    public static final Color BACKGROUND_COLOR = new Color(63 / 255f, 146 / 255f, 26 / 255f, 1);
+    public static final Color FONT_COLOR = new Color(0, 0, 0, 1);
 
     public static final float SPEED = 200;
     // ANGLE_SPEED is the change in x/y when moving both vertically and horizontally

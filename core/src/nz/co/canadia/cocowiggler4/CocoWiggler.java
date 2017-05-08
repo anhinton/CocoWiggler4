@@ -5,8 +5,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -16,6 +18,7 @@ import nz.co.canadia.cocowiggler4.util.Constants;
 public class CocoWiggler extends ApplicationAdapter {
     private SpriteBatch batch;
     private ShapeRenderer shapeRenderer;
+    private BitmapFont font;
     private OrthographicCamera camera;
     private Viewport viewport;
     private Coco coco;
@@ -46,6 +49,7 @@ public class CocoWiggler extends ApplicationAdapter {
 
         batch = new SpriteBatch();
         shapeRenderer = new ShapeRenderer();
+        font = new BitmapFont(Gdx.files.internal("fonts/Arial32.fnt"));
 
         poos = new Array<Poo>();
 
@@ -60,7 +64,8 @@ public class CocoWiggler extends ApplicationAdapter {
     @Override
     public void render() {
         // clear screen
-        Gdx.gl.glClearColor(0.246f, 0.574f, 0.102f, 1);
+        Gdx.gl.glClearColor(Constants.BACKGROUND_COLOR.r, Constants.BACKGROUND_COLOR.g,
+                Constants.BACKGROUND_COLOR.b, Constants.BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         // update camera
@@ -91,6 +96,13 @@ public class CocoWiggler extends ApplicationAdapter {
         // draw coco
         coco.draw(batch);
 
+        // do text
+        font.setColor(Constants.FONT_COLOR);
+        font.draw(batch, "Produced: " + coco.getPooCount(), 10, Constants.APP_HEIGHT - 10, 0, Align.left,
+                false);
+        font.draw(batch, "Consumed: " + coco.getEatenCount(), Constants.APP_WIDTH - 10, Constants.APP_HEIGHT - 10,
+                0, Align.right, false);
+
         // end sprite batch
         batch.end();
 
@@ -110,6 +122,7 @@ public class CocoWiggler extends ApplicationAdapter {
         background.dispose();
         batch.dispose();
         coco.dispose();
+        font.dispose();
         for (Texture bitmap: pooBitmaps) {
             bitmap.dispose();
         }
