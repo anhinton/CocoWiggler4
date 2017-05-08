@@ -2,6 +2,7 @@ package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -24,6 +25,8 @@ import nz.co.canadia.cocowiggler4.util.Constants;
 class Coco {
     private Texture bitmap;
     private Sprite sprite;
+    private Sound chomp;
+    private Sound pop;
     private float rot;
     private boolean pressingLeft;
     private boolean pressingRight;
@@ -52,6 +55,9 @@ class Coco {
         target = new Vector3();
         changeX = 0;
         changeY = 0;
+
+        chomp = Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg"));
+        pop = Gdx.audio.newSound(Gdx.files.internal("sounds/pop.ogg"));
 
         bitmap = new Texture("graphics/coco.png");
         bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -98,6 +104,7 @@ class Coco {
             if (poo.getBoundingCircle().overlaps(getMouthBoundingCircle())){
                 if (poo.isEdible()) {
                     poo.eatPoo();
+                    chomp.play(1.0f);
                 }
             }
         }
@@ -160,6 +167,8 @@ class Coco {
 
     void dispose() {
         bitmap.dispose();
+        chomp.dispose();
+        pop.dispose();
     }
 
     // This method is used to make Coco move towards a target select by touching clicking
@@ -260,11 +269,17 @@ class Coco {
         }
         float pooY = sprite.getY() + sprite.getHeight() / 5;
 
+        // create a new poo
         Poo poo = new Poo(pooBitmaps, pooX, pooY);
         poos.add(poo);
+
+        // poo time calculations
         lastPooTime = TimeUtils.nanoTime();
         pooDelay = (long) MathUtils.randomTriangular(Constants.POO_TIME_MIN,
                 Constants.POO_TIME_MAX);
+
+        // make a poo sound
+        pop.play(1.0f);
     }
 
 }
