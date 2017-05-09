@@ -59,7 +59,15 @@ class SplashScreen implements Screen {
         sprite.draw(game.batch);
         game.batch.end();
 
-        if (Gdx.input.isTouched() || Gdx.input.isKeyPressed(Input.Keys.ANY_KEY)) {
+        // ESC or BACK quits the game
+        Gdx.input.setCatchBackKey(true);
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)
+                || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            Gdx.app.exit();
+        }
+
+        // any other input means start the game
+        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
             game.setScreen(new GameScreen(game));
             dispose();
         }

@@ -1,12 +1,12 @@
 package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
@@ -68,6 +68,14 @@ class GameScreen implements Screen {
         Gdx.gl.glClearColor(Constants.BACKGROUND_COLOR.r, Constants.BACKGROUND_COLOR.g,
                 Constants.BACKGROUND_COLOR.b, Constants.BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        // go back to splash screen on back key/Escape
+        Gdx.input.setCatchBackKey(true);
+        if (Gdx.input.isKeyPressed(Input.Keys.BACK)
+                || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            game.setScreen(new SplashScreen(game));
+            dispose();
+        }
 
         // update camera
         camera.update();
