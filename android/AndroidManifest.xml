@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nz.co.canadia.cocowiggler4"
     android:versionCode="1"
-    android:versionName="0.0.2017-04-28" >
+    android:versionName="2017-05-15" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="25" />
 
