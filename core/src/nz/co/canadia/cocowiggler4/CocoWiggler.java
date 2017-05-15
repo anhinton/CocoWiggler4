@@ -16,7 +16,7 @@ public class CocoWiggler extends Game {
 
         // play music
         music = Gdx.audio.newMusic(Gdx.files.internal("music/soundtrack.ogg"));
-        music.setVolume(0.5f);
+        music.setVolume(0.8f);
         music.setLooping(true);
         music.play();
 
