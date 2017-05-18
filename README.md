@@ -2,6 +2,12 @@
 
 Come with us now on a journey through Coco and wiggling.
 
+This game is built using the libGDC Java game development
+framework <http://libgdx.badlogicgames.com/>. Instructions for
+importing and running the project in IntelliJ IDEA or Android Studio
+can be found
+at <https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA>.
+
 Coco Wiggler 4 copyright 2017 Ashley Noel Hinton.
 
 This program is free software: you can redistribute it and/or modify
