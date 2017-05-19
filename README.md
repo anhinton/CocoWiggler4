@@ -2,6 +2,8 @@
 
 Come with us now on a journey through Coco and wiggling.
 
+Play the game at <https://canadia.co.nz/cocowiggler4/>.
+
 This game is built using the libGDX Java game development
 framework <http://libgdx.badlogicgames.com/>. Instructions for
 importing and running the project in IntelliJ IDEA or Android Studio
