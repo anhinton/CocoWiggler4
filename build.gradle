@@ -15,7 +15,7 @@ allprojects {
     apply plugin: "eclipse"
     apply plugin: "idea"
 
-    version = "2017-05-15"
+    version = "2017-06-09"
     ext {
         appName = "Coco Wiggler 4"
         gdxVersion = '1.9.6'

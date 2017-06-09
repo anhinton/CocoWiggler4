@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="nz.co.canadia.cocowiggler4"
-    android:versionCode="1"
-    android:versionName="2017-05-15" >
+    android:versionCode="2"
+    android:versionName="2017-06-09" >
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="25" />
 
