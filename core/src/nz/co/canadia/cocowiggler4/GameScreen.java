@@ -82,7 +82,7 @@ class GameScreen implements Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         // update Coco
-        coco.update(camera, pooBitmaps, poos);
+        coco.update(viewport, pooBitmaps, poos);
 
         // flush eaten poos
         for (int i = 0; i < poos.size; i++) {

@@ -3,7 +3,6 @@ package nz.co.canadia.cocowiggler4;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -15,6 +14,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 import nz.co.canadia.cocowiggler4.util.Constants;
 
@@ -95,7 +95,7 @@ class Coco {
                 sprite.getWidth() / 10));
     }
 
-    void update(Camera camera, Array<Texture> pooBitmaps, Array<Poo> poos) {
+    void update(Viewport viewport, Array<Texture> pooBitmaps, Array<Poo> poos) {
         // where is my head at
         calculateHeadCentre();
 
@@ -136,7 +136,7 @@ class Coco {
         // Mouse/touch-screen movement
         if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
             moving = true;
-            camera.unproject(target.set(Gdx.input.getX(), Gdx.input.getY(), 0));
+            viewport.unproject(target.set(Gdx.input.getX(), Gdx.input.getY(), 0));
         }
 
         // perform movement
