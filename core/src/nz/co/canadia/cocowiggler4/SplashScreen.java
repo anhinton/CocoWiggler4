@@ -67,7 +67,8 @@ class SplashScreen implements Screen {
         }
 
         // any other input means start the game
-        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)) {
+        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)
+                || Gdx.input.isKeyPressed(Input.Keys.DPAD_CENTER)) {
             game.setScreen(new GameScreen(game));
             dispose();
         }
