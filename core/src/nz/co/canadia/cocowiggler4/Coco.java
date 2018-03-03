@@ -119,10 +119,10 @@ class Coco {
         // Movement controls
 
         // Keyboard movement
-        pressingLeft = Gdx.input.isKeyPressed(Input.Keys.LEFT);
-        pressingRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
-        pressingUp = Gdx.input.isKeyPressed(Input.Keys.UP);
-        pressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        pressingLeft = Gdx.input.isKeyPressed(Input.Keys.LEFT | Input.Keys.DPAD_LEFT);
+        pressingRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT | Input.Keys.DPAD_RIGHT);
+        pressingUp = Gdx.input.isKeyPressed(Input.Keys.UP | Input.Keys.DPAD_UP);
+        pressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN | Input.Keys.DPAD_DOWN);
         // cancel opposites
         if (pressingLeft && pressingRight) {
             pressingLeft = false;
