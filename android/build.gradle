@@ -19,7 +19,7 @@ android {
     }
     defaultConfig {
         applicationId "nz.co.canadia.cocowiggler4"
-        minSdkVersion 8
+        minSdkVersion 21
         targetSdkVersion 25
     }
     productFlavors {
