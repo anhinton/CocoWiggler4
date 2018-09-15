@@ -2,7 +2,7 @@
 
 Come with us now on a journey through Coco and wiggling.
 
-Play the game at <https://canadia.co.nz/cocowiggler4/>.
+Play the game at <https://canadia.itch.io/coco-wiggler-4>.
 
 This game is built using the libGDX Java game development
 framework <http://libgdx.badlogicgames.com/>. Instructions for
