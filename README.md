@@ -10,6 +10,8 @@ importing and running the project in IntelliJ IDEA or Android Studio
 can be found
 at <https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA>.
 
+### License 
+
 Coco Wiggler 4 copyright 2017 Ashley Noel Hinton.
 
 This program is free software: you can redistribute it and/or modify
@@ -25,7 +27,7 @@ General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-## Assets
+#### Assets
 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">
 <img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/88x31.png" />
