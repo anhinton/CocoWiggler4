@@ -8,17 +8,18 @@
         android:required="false" />
     <uses-feature android:name="android.software.leanback"
         android:required="false" />
-    <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="25" />
+    <uses-sdk android:targetSdkVersion="25" />
 
     <application
         android:allowBackup="true"
         android:banner="@drawable/banner"
         android:icon="@drawable/ic_launcher"
         android:isGame="true"
+        android:appCategory="game"
         android:label="@string/app_name"
         android:theme="@style/GdxTheme">
         <activity
-            android:name=".AndroidLauncher"
+            android:name="nz.co.canadia.cocowiggler4.AndroidLauncher"
             android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">
