@@ -11,6 +11,11 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
+        config.allowIpod = true;
+        config.orientationLandscape = true;
+        config.orientationPortrait = false;
+        config.useAccelerometer = false;
+        config.useCompass = false;
         return new IOSApplication(new CocoWiggler(), config);
     }
 
