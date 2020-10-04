@@ -15,7 +15,7 @@ public class CocoWiggler extends Game {
         batch = new SpriteBatch();
 
         // play music
-        music = Gdx.audio.newMusic(Gdx.files.internal("music/soundtrack.ogg"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("music/soundtrack.mp3"));
         music.setVolume(0.8f);
         music.setLooping(true);
         music.play();

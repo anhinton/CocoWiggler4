@@ -58,8 +58,8 @@ class Coco {
         changeX = 0;
         changeY = 0;
 
-        chomp = Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg"));
-        pop = Gdx.audio.newSound(Gdx.files.internal("sounds/pop.ogg"));
+        chomp = Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.mp3"));
+        pop = Gdx.audio.newSound(Gdx.files.internal("sounds/pop.mp3"));
 
         bitmap = new Texture("graphics/coco.png");
         bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
