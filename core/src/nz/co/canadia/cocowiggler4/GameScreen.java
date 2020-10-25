@@ -99,7 +99,7 @@ class GameScreen implements InputProcessor, Screen {
         table.top();
         table.pad(Constants.UI_PADDING);
         table.add(producedLabel).left().expandX().prefWidth(Constants.APP_WIDTH / 4f);
-        table.add(menuButton).center().prefSize(Constants.MENU_BUTTON_WIDTH * 2f / 3, Constants.MENU_BUTTON_HEIGHT * 2f / 3);
+        table.add(menuButton).center().prefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
         table.add(consumedLabel).right().expandX().prefWidth(Constants.APP_WIDTH / 4f);
 
         stage.addActor(table);
