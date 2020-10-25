@@ -41,6 +41,8 @@ class GameScreen implements InputProcessor, Screen {
     GameScreen(final CocoWiggler game) {
         this.game = game;
 
+        game.playMusicLooping();
+
         pooBitmaps.add(new Texture("graphics/poo01.png"));
         pooBitmaps.add(new Texture("graphics/poo02.png"));
         pooBitmaps.add(new Texture("graphics/poo03.png"));

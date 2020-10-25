@@ -1,10 +1,4 @@
 # TODO
-  
-  + ~~implement game Preferences in SplashScreen for music/sound volumes~~
-      - ~~read on load if exists~~
-      - ~~save on exiting Settings menu~~
-      
-  + don't play music in Html until something has been clicked
       
   + redo app icons
       - Android
@@ -12,6 +6,12 @@
       - HTML
   
 ## Done
+  
+  + ~~implement game Preferences in SplashScreen for music/sound volumes~~
+      - ~~read on load if exists~~
+      - ~~save on exiting Settings menu~~
+      
+  + ~~don't play music in Html until something has been clicked~~
   
   + ~~create SettingsScreen~~
       - ~~get there from SplashScreen Settings button~~
