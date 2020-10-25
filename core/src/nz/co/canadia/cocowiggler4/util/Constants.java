@@ -13,6 +13,11 @@ public class Constants {
     public static final int APP_WIDTH = 800;
     public static final int APP_HEIGHT = 600;
 
+    public static final int UI_PADDING = 10;
+
+    public static final int MENU_BUTTON_WIDTH = 150;
+    public static final int MENU_BUTTON_HEIGHT = 75;
+
     public static final Color BACKGROUND_COLOR = new Color(63 / 255f, 146 / 255f, 26 / 255f, 1);
     public static final Color FONT_COLOR = new Color(0, 0, 0, 1);
 

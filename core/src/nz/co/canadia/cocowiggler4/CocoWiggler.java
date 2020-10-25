@@ -21,8 +21,7 @@ public class CocoWiggler extends Game {
 //        music.play();
 
         // show the intro screen
-//        this.setScreen(new SplashScreen(this));
-        this.setScreen(new GameScreen(this));
+        this.setScreen(new SplashScreen(this));
     }
 
     public void render() {

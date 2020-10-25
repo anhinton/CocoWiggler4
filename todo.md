@@ -1,20 +1,21 @@
 # TODO
   
-  + ~~add "Menu" button to GameScreen (no Input.Keys.BACK/ESC on iOS)~~
-      - ~~clicking goes back to SplashScreen~~
-  
-  + add buttons to SplashScreen
-      - Play
-          - move from keyDown() logic
-      - Settings
-      - Quit (Android/Desktop only)
+  + ~~add menu buttons to SplashScreen~~
+      - ~~Play~~
+          - ~~move from touchDown() logic~~
+      - ~~Settings~~
+      - ~~Quit (Desktop only)~~
   
   + create SettingsScreen
+      - get there from SplashScreen Settings button
       - Music Volume
       - Sound Volume
       - Credits
   
 ## Done
+  
+  + ~~add "Menu" button to GameScreen (no Input.Keys.BACK/ESC on iOS)~~
+      - ~~clicking goes back to SplashScreen~~
 
   + ~~migrate touch detection from Coco.update() to GameScreen~~
       - ~~create Coco.setTarget(Vector3) method~~

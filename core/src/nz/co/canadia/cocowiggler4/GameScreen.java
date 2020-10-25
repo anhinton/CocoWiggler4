@@ -33,8 +33,8 @@ class GameScreen implements InputProcessor, Screen {
     private final Array<Poo> poos;
     private final boolean debug;
     private final Stage stage;
-    private final Texture textureUp;
-    private final Texture textureDown;
+    private final Texture upTexture;
+    private final Texture downTexture;
     private final Label producedLabel;
     private final Label consumedLabel;
 
@@ -71,15 +71,15 @@ class GameScreen implements InputProcessor, Screen {
         producedLabel = new Label("", scoreLabelStyle);
         consumedLabel = new Label("", scoreLabelStyle);
 
-        textureUp = new Texture("graphics/button_up.png");
-        NinePatchDrawable patchDrawableUp = new NinePatchDrawable(
-                new NinePatch(textureUp, 3, 3, 3, 3));
-        textureDown = new Texture("graphics/button_down.png");
-        NinePatchDrawable patchDrawableDown = new NinePatchDrawable(
-                new NinePatch(textureDown, 3, 3, 3, 3));
+        upTexture = new Texture("graphics/button_up.png");
+        NinePatchDrawable upPatchDrawable = new NinePatchDrawable(
+                new NinePatch(upTexture, 3, 3, 3, 3));
+        downTexture = new Texture("graphics/button_down.png");
+        NinePatchDrawable downPatchDrawable = new NinePatchDrawable(
+                new NinePatch(downTexture, 3, 3, 3, 3));
         ImageTextButton.ImageTextButtonStyle style =
                 new ImageTextButton.ImageTextButtonStyle(
-                        patchDrawableUp, patchDrawableDown, patchDrawableUp, font);
+                        upPatchDrawable, downPatchDrawable, upPatchDrawable, font);
         style.fontColor = Constants.FONT_COLOR;
         ImageTextButton menuButton = new ImageTextButton(
                 "Menu", style);
@@ -95,7 +95,7 @@ class GameScreen implements InputProcessor, Screen {
         Table table = new Table();
         table.setFillParent(true);
         table.top();
-        table.pad(5, 10, 10, 5);
+        table.pad(Constants.UI_PADDING);
         table.add(producedLabel).left().expandX().prefWidth(Constants.APP_WIDTH / 4f);
         table.add(menuButton).center();
         table.add(consumedLabel).right().expandX().prefWidth(Constants.APP_WIDTH / 4f);
@@ -187,8 +187,8 @@ class GameScreen implements InputProcessor, Screen {
         for (Poo poo: poos) {
             poo.dispose();
         }
-        textureUp.dispose();
-        textureDown.dispose();
+        upTexture.dispose();
+        downTexture.dispose();
         stage.dispose();
     }
 
