@@ -22,9 +22,6 @@ public class CocoWiggler extends Game {
 
         // play music
         music = Gdx.audio.newMusic(Gdx.files.internal("music/soundtrack.mp3"));
-        setMusicVolume(0.8f);
-        music.setLooping(true);
-        music.play();
 
         // show the intro screen
         this.setScreen(new SplashScreen(this));
@@ -68,5 +65,10 @@ public class CocoWiggler extends Game {
             soundVolume = 1;
         }
         this.soundVolume = soundVolume;
+    }
+
+    public void playMusicLooping() {
+        music.setLooping(true);
+        music.play();
     }
 }

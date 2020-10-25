@@ -38,6 +38,7 @@ class SplashScreen implements InputProcessor, Screen {
     private final Label.LabelStyle labelStyle;
     private final ImageTextButton.ImageTextButtonStyle buttonStyle;
     private final ImageTextButton backButton;
+    private final Preferences settings;
     private float musicVolume;
     private float soundVolume;
     private Label musicLevelLabel;
@@ -49,6 +50,14 @@ class SplashScreen implements InputProcessor, Screen {
 
     SplashScreen(final CocoWiggler game) {
         this.game = game;
+
+        settings = Gdx.app.getPreferences("nz.co.canadia.cocowiggler4.settings");
+        game.setSoundVolume(settings.getFloat("soundVolume", Constants.SOUND_VOLUME_DEFAULT));
+
+        game.setMusicVolume(settings.getFloat("musicVolume", Constants.MUSIC_VOLUME_DEFAULT));
+        if(Gdx.app.getType() != Application.ApplicationType.WebGL) {
+            game.playMusicLooping();
+        }
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, Constants.APP_WIDTH, Constants.APP_HEIGHT);
@@ -83,6 +92,7 @@ class SplashScreen implements InputProcessor, Screen {
         backButton.addListener(new ChangeListener() {
             @Override
             public void changed(ChangeEvent event, Actor actor) {
+                settings.flush();
                 goBack();
             }
         });
@@ -135,24 +145,28 @@ class SplashScreen implements InputProcessor, Screen {
         game.setMusicVolume(musicVolume - Constants.VOLUME_INCREMENT);
         musicVolume = game.getMusicVolume();
         musicLevelLabel.setText(printVolume(musicVolume));
+        settings.putFloat("musicVolume", musicVolume);
     }
 
     private void increaseMusicVolume() {
         game.setMusicVolume(musicVolume + Constants.VOLUME_INCREMENT);
         musicVolume = game.getMusicVolume();
         musicLevelLabel.setText(printVolume(musicVolume));
+        settings.putFloat("musicVolume", musicVolume);
     }
 
     private void decreaseSoundVolume() {
         game.setSoundVolume(soundVolume - Constants.VOLUME_INCREMENT);
         soundVolume = game.getSoundVolume();
         soundLevelLabel.setText(printVolume(soundVolume));
+        settings.putFloat("soundVolume", soundVolume);
     }
 
     private void increaseSoundVolume() {
         game.setSoundVolume(soundVolume + Constants.VOLUME_INCREMENT);
         soundVolume = game.getSoundVolume();
         soundLevelLabel.setText(printVolume(soundVolume));
+        settings.putFloat("soundVolume", soundVolume);
     }
 
     private void showTitleMenu() {

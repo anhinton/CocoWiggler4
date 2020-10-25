@@ -1,16 +1,10 @@
 # TODO
   
-  + ~~create SettingsScreen~~
-      - ~~get there from SplashScreen Settings button~~
-      - ~~Music Volume~~
-      - ~~Sound Volume~~
+  + ~~implement game Preferences in SplashScreen for music/sound volumes~~
+      - ~~read on load if exists~~
+      - ~~save on exiting Settings menu~~
       
-  + ~~implement sound and music volume setters and getters in CocoWiggler~~
-      - ~~use sound volume when making sounds in GameScreen~~
-  
-  + implement game Preferences in SplashScreen for music/sound volumes
-      - read on load if exists
-      - save on exiting Settings menu
+  + don't play music in Html until something has been clicked
       
   + redo app icons
       - Android
@@ -18,6 +12,14 @@
       - HTML
   
 ## Done
+  
+  + ~~create SettingsScreen~~
+      - ~~get there from SplashScreen Settings button~~
+      - ~~Music Volume~~
+      - ~~Sound Volume~~
+      
+  + ~~implement sound and music volume setters and getters in CocoWiggler~~
+      - ~~use sound volume when making sounds in GameScreen~~
   
   + ~~add menu buttons to SplashScreen~~
       - ~~Play~~
