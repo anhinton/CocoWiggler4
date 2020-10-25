@@ -13,15 +13,15 @@
       - Music Volume
       - Sound Volume
       - Credits
-      
-  + config IOSLauncher
-      - allowIpod = true
-      - orientationLandscape = true
-      - orientationPortrait = false
-      - useAccelerometer = false
-      - useCompass = false
   
 ## Done
 
   + ~~config ios/Info.plist.xml~~
       - ~~force portrait mode on iPad~~
+      
+  + ~~config IOSLauncher~~
+      - ~~allowIpod = true~~
+      - ~~orientationLandscape = true~~
+      - ~~orientationPortrait = false~~
+      - ~~useAccelerometer = false~~
+      - ~~useCompass = false~~
