@@ -1,10 +1,16 @@
 # TODO
   
-  + create SettingsScreen
-      - get there from SplashScreen Settings button
-      - Music Volume
-      - Sound Volume
-      - Credits
+  + ~~create SettingsScreen~~
+      - ~~get there from SplashScreen Settings button~~
+      - ~~Music Volume~~
+      - ~~Sound Volume~~
+      
+  + ~~implement sound and music volume setters and getters in CocoWiggler~~
+      - ~~use sound volume when making sounds in GameScreen~~
+  
+  + implement game Preferences in SplashScreen for music/sound volumes
+      - read on load if exists
+      - save on exiting Settings menu
       
   + redo app icons
       - Android

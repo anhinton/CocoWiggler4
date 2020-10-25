@@ -38,8 +38,8 @@ class GameScreen implements InputProcessor, Screen {
     private final Label producedLabel;
     private final Label consumedLabel;
 
-    GameScreen(final CocoWiggler gam) {
-        this.game = gam;
+    GameScreen(final CocoWiggler game) {
+        this.game = game;
 
         pooBitmaps.add(new Texture("graphics/poo01.png"));
         pooBitmaps.add(new Texture("graphics/poo02.png"));
@@ -63,7 +63,7 @@ class GameScreen implements InputProcessor, Screen {
 
         poos = new Array<>();
 
-        coco = new Coco();
+        coco = new Coco(game.getSoundVolume());
 
         background = new Background();
 

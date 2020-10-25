@@ -25,6 +25,7 @@ class Coco {
     private final Sprite sprite;
     private final Sound chomp;
     private final Sound pop;
+    private final float soundVolume;
     private float rot;
     private boolean movingLeft;
     private boolean movingRight;
@@ -41,7 +42,9 @@ class Coco {
     private int pooCount;
     private int eatenCount;
 
-    Coco () {
+    Coco(float soundVolume) {
+        this.soundVolume = soundVolume;
+
         // initialize variables
         movingLeft = false;
         movingRight = false;
@@ -128,7 +131,7 @@ class Coco {
             if (poo.getBoundingCircle().overlaps(getMouthBoundingCircle())){
                 if (poo.isEdible()) {
                     poo.eatPoo();
-                    chomp.play(1.0f);
+                    chomp.play(soundVolume);
                     eatenCount++;
                 }
             }
@@ -288,7 +291,7 @@ class Coco {
                 Constants.POO_TIME_MAX);
 
         // make a poo sound
-        pop.play(1.0f);
+        pop.play(soundVolume);
     }
 
     int getPooCount() {
