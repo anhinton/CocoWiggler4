@@ -1,12 +1,4 @@
 # TODO
-
-  + ~~migrate touch detection from Coco.update() to GameScreen~~
-      - ~~create Coco.setTarget(Vector3) method~~
-      - ~~Mouse/touch-screen movement to GameScreen.touchDown()~~
-          - ~~call Coco.setTarget(Vector3)~~
-      - ~~Keyboard movement to GameScreen.keyDown() and GameScreen.keyUp()~~
-          - ~~create setters in Coco() for movement direction~~
-          - ~~handle opposite key presses in Coco.move()~~
   
   + add Back/Menu button to GameScreen (Input.Keys.BACK/ESC on iOS)
   
@@ -22,6 +14,14 @@
       - Credits
   
 ## Done
+
+  + ~~migrate touch detection from Coco.update() to GameScreen~~
+      - ~~create Coco.setTarget(Vector3) method~~
+      - ~~Mouse/touch-screen movement to GameScreen.touchDown()~~
+          - ~~call Coco.setTarget(Vector3)~~
+      - ~~Keyboard movement to GameScreen.keyDown() and GameScreen.keyUp()~~
+          - ~~create setters in Coco() for movement direction~~
+          - ~~handle opposite key presses in Coco.move()~~
 
   + ~~migrate Input Handling from Polling to Event Handling~~
       - ~~SplashScreen implements InputProcessor~~

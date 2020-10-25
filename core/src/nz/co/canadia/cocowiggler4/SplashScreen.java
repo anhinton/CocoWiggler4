@@ -21,10 +21,10 @@ import nz.co.canadia.cocowiggler4.util.Constants;
 class SplashScreen implements InputProcessor, Screen {
 
     private final CocoWiggler game;
-    private OrthographicCamera camera;
-    private Viewport viewport;
-    private Texture bitmap;
-    private Sprite sprite;
+    private final OrthographicCamera camera;
+    private final Viewport viewport;
+    private final Texture bitmap;
+    private final Sprite sprite;
 
     SplashScreen(final CocoWiggler game) {
         this.game = game;

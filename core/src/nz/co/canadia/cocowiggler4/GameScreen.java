@@ -20,20 +20,19 @@ import nz.co.canadia.cocowiggler4.util.Constants;
 class GameScreen implements InputProcessor, Screen {
     private final CocoWiggler game;
 
-    private ShapeRenderer shapeRenderer;
-    private BitmapFont font;
-    private OrthographicCamera camera;
-    private Viewport viewport;
-    private Coco coco;
-    private Background background;
-    private Array<Texture> pooBitmaps;
-    private Array<Poo> poos;
-    private boolean debug;
+    private final ShapeRenderer shapeRenderer;
+    private final BitmapFont font;
+    private final OrthographicCamera camera;
+    private final Viewport viewport;
+    private final Coco coco;
+    private final Background background;
+    private final Array<Texture> pooBitmaps = new Array<>();
+    private final Array<Poo> poos;
+    private final boolean debug;
 
     GameScreen(final CocoWiggler gam) {
         this.game = gam;
 
-        pooBitmaps = new Array<Texture>();
         pooBitmaps.add(new Texture("graphics/poo01.png"));
         pooBitmaps.add(new Texture("graphics/poo02.png"));
         pooBitmaps.add(new Texture("graphics/poo03.png"));
@@ -54,7 +53,7 @@ class GameScreen implements InputProcessor, Screen {
         shapeRenderer = new ShapeRenderer();
         font = new BitmapFont(Gdx.files.internal("fonts/Arial32.fnt"));
 
-        poos = new Array<Poo>();
+        poos = new Array<>();
 
         coco = new Coco();
 
@@ -78,7 +77,7 @@ class GameScreen implements InputProcessor, Screen {
         game.batch.setProjectionMatrix(camera.combined);
 
         // update Coco
-        coco.update(viewport, pooBitmaps, poos);
+        coco.update(pooBitmaps, poos);
 
         // flush eaten poos
         for (int i = 0; i < poos.size; i++) {

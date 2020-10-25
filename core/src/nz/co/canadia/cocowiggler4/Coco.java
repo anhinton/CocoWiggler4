@@ -13,7 +13,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import nz.co.canadia.cocowiggler4.util.Constants;
 
@@ -22,10 +21,10 @@ import nz.co.canadia.cocowiggler4.util.Constants;
  */
 
 class Coco {
-    private Texture bitmap;
-    private Sprite sprite;
-    private Sound chomp;
-    private Sound pop;
+    private final Texture bitmap;
+    private final Sprite sprite;
+    private final Sound chomp;
+    private final Sound pop;
     private float rot;
     private boolean movingLeft;
     private boolean movingRight;
@@ -35,7 +34,7 @@ class Coco {
     private boolean facingRight;
     private float changeX;
     private float changeY;
-    private Vector2 headCentre;
+    private final Vector2 headCentre;
     private Vector3 target;
     private long lastPooTime;
     private long pooDelay;
@@ -103,11 +102,10 @@ class Coco {
     private void calculateHeadCentre() {
         if (facingRight) {
             headCentre.x = sprite.getWidth() * 5 / 6;
-            headCentre.y = sprite.getHeight() / 5;
         } else {
             headCentre.x = sprite.getWidth() / 6;
-            headCentre.y = sprite.getHeight() / 5;
         }
+        headCentre.y = sprite.getHeight() / 5;
     }
 
     private Circle getMouthBoundingCircle() {
@@ -115,7 +113,7 @@ class Coco {
                 sprite.getWidth() / 10));
     }
 
-    void update(Viewport viewport, Array<Texture> pooBitmaps, Array<Poo> poos) {
+    void update(Array<Texture> pooBitmaps, Array<Poo> poos) {
         // where is my head at
         calculateHeadCentre();
 
