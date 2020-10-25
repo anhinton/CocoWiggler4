@@ -2,6 +2,7 @@ package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -17,7 +18,7 @@ import nz.co.canadia.cocowiggler4.util.Constants;
  * Show the title before we get started
  */
 
-class SplashScreen implements Screen {
+class SplashScreen implements InputProcessor, Screen {
 
     private final CocoWiggler game;
     private OrthographicCamera camera;
@@ -39,6 +40,8 @@ class SplashScreen implements Screen {
         sprite = new Sprite(grassRegion);
         sprite.setOrigin(0, 0);
         sprite.setPosition(0, 0);
+
+        Gdx.input.setInputProcessor(this);
     }
 
     @Override
@@ -58,20 +61,6 @@ class SplashScreen implements Screen {
         game.batch.begin();
         sprite.draw(game.batch);
         game.batch.end();
-
-        // ESC or BACK quits the game
-        Gdx.input.setCatchBackKey(true);
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK)
-                || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            Gdx.app.exit();
-        }
-
-        // any other input means start the game
-        if (Gdx.input.isTouched() || Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY)
-                || Gdx.input.isKeyPressed(Input.Keys.DPAD_CENTER)) {
-            game.setScreen(new GameScreen(game));
-            dispose();
-        }
     }
 
     @Override
@@ -98,4 +87,52 @@ class SplashScreen implements Screen {
         bitmap.dispose();
     }
 
+    @Override
+    public boolean keyDown(int keycode) {
+        // ESC or BACK quits the game
+        if (keycode == Input.Keys.BACK
+                | keycode == Input.Keys.ESCAPE) {
+            Gdx.app.exit();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        // any other input means start the game
+        game.setScreen(new GameScreen(game));
+        dispose();
+        return true;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
+    }
 }
