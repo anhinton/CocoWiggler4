@@ -2,6 +2,7 @@ package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -15,7 +16,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 
 import nz.co.canadia.cocowiggler4.util.Constants;
 
-class GameScreen implements Screen {
+class GameScreen implements InputProcessor, Screen {
     private final CocoWiggler game;
 
     private ShapeRenderer shapeRenderer;
@@ -58,6 +59,8 @@ class GameScreen implements Screen {
 
         background = new Background();
 
+        Gdx.input.setInputProcessor(this);
+
         // DEBUG GRAPHICS
         debug = Constants.GRAPHICS_DEBUG;
     }
@@ -68,14 +71,6 @@ class GameScreen implements Screen {
         Gdx.gl.glClearColor(Constants.BACKGROUND_COLOR.r, Constants.BACKGROUND_COLOR.g,
                 Constants.BACKGROUND_COLOR.b, Constants.BACKGROUND_COLOR.a);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        // go back to splash screen on back key/Escape
-        Gdx.input.setCatchBackKey(true);
-        if (Gdx.input.isKeyPressed(Input.Keys.BACK)
-                || Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            game.setScreen(new SplashScreen(game));
-            dispose();
-        }
 
         // update camera
         camera.update();
@@ -158,5 +153,51 @@ class GameScreen implements Screen {
     @Override
     public void resize(int width, int height) {
         viewport.update(width, height);
+    }
+
+    @Override
+    public boolean keyDown(int keycode) {
+        // go back to splash screen on back key/Escape
+        if (keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE) {
+            game.setScreen(new SplashScreen(game));
+            dispose();
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public boolean keyUp(int keycode) {
+        return false;
+    }
+
+    @Override
+    public boolean keyTyped(char character) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        return false;
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        return false;
+    }
+
+    @Override
+    public boolean mouseMoved(int screenX, int screenY) {
+        return false;
+    }
+
+    @Override
+    public boolean scrolled(int amount) {
+        return false;
     }
 }
