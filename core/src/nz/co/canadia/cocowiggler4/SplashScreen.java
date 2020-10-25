@@ -1,6 +1,7 @@
 package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -39,12 +40,14 @@ class SplashScreen implements InputProcessor, Screen {
     private final ImageTextButton.ImageTextButtonStyle buttonStyle;
     private final ImageTextButton backButton;
     private final Preferences settings;
+    private final ScrollPane.ScrollPaneStyle scrollPaneStyle;
+    private final BitmapFont creditsFont;
     private float musicVolume;
     private float soundVolume;
     private Label musicLevelLabel;
     private Label soundLevelLabel;
     private enum Menu {
-        TITLE, SETTINGS
+        TITLE, SETTINGS, CREDITS
     }
     private Menu currentMenu;
 
@@ -77,6 +80,7 @@ class SplashScreen implements InputProcessor, Screen {
         downTexture = new Texture("graphics/button_down.png");
 
         font = new BitmapFont(Gdx.files.internal("fonts/Arial32.fnt"));
+        creditsFont = new BitmapFont(Gdx.files.internal("fonts/Arial20.fnt"));
 
         labelStyle = new Label.LabelStyle(font, Constants.FONT_COLOR);
 
@@ -84,9 +88,14 @@ class SplashScreen implements InputProcessor, Screen {
                 new NinePatch(upTexture, 3, 3, 3, 3));
         NinePatchDrawable downPatchDrawable = new NinePatchDrawable(
                 new NinePatch(downTexture, 3, 3, 3, 3));
+
         buttonStyle = new ImageTextButton.ImageTextButtonStyle(
                 upPatchDrawable, downPatchDrawable, upPatchDrawable, font);
         buttonStyle.fontColor = Constants.FONT_COLOR;
+
+        scrollPaneStyle = new ScrollPane.ScrollPaneStyle(
+                null, downPatchDrawable, upPatchDrawable,
+                downPatchDrawable, upPatchDrawable);
 
         backButton = new ImageTextButton("Back", buttonStyle);
         backButton.addListener(new ChangeListener() {
@@ -118,6 +127,9 @@ class SplashScreen implements InputProcessor, Screen {
             case SETTINGS:
                 showSettingsMenu();
                 break;
+            case CREDITS:
+                showCreditsMenu();
+                break;
         }
     }
 
@@ -128,6 +140,9 @@ class SplashScreen implements InputProcessor, Screen {
                 break;
             case SETTINGS:
                 setCurrentMenu(Menu.TITLE);
+                break;
+            case CREDITS:
+                setCurrentMenu(Menu.SETTINGS);
                 break;
         }
     }
@@ -214,12 +229,12 @@ class SplashScreen implements InputProcessor, Screen {
         // Button table
         Table buttonTable = new Table();
         buttonTable.pad(Constants.UI_PADDING);
-        buttonTable.add(playButton).pad(Constants.UI_PADDING)
+        buttonTable.add(playButton).space(Constants.UI_PADDING)
                 .prefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
-        buttonTable.add(settingsButton).pad(Constants.UI_PADDING)
+        buttonTable.add(settingsButton).space(Constants.UI_PADDING)
                 .prefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
         if (Gdx.app.getType() == Application.ApplicationType.Desktop) {
-            buttonTable.add(quitButton).pad(Constants.UI_PADDING)
+            buttonTable.add(quitButton).space(Constants.UI_PADDING)
                     .prefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
         }
 
@@ -227,7 +242,7 @@ class SplashScreen implements InputProcessor, Screen {
         table.setFillParent(true);
         table.pad(Constants.UI_PADDING);
         table.center();
-        table.add(titleImage).pad(Constants.UI_PADDING);
+        table.add(titleImage).space(Constants.UI_PADDING);
         table.row();
         table.add(buttonTable);
 
@@ -275,44 +290,81 @@ class SplashScreen implements InputProcessor, Screen {
             }
         });
 
+        ImageTextButton creditsButton = new ImageTextButton("Credits", buttonStyle);
+        creditsButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                setCurrentMenu(Menu.CREDITS);
+            }
+        });
+
         Table settingsTable = new Table();
         settingsTable.setFillParent(true);
         settingsTable.pad(Constants.UI_PADDING);
         settingsTable.center();
         
-        settingsTable.add(settingsLabel).left().pad(Constants.UI_PADDING);
+        settingsTable.add(settingsLabel).left().space(Constants.UI_PADDING);
         settingsTable.row();
-        settingsTable.add(musicVolumeLabel).left().pad(Constants.UI_PADDING);
+        settingsTable.add(musicVolumeLabel).left().space(Constants.UI_PADDING);
         settingsTable.add(musicDownButton)
-                .pad(Constants.UI_PADDING)
+                .space(Constants.UI_PADDING)
                 .prefSize(Constants.MENU_BUTTON_HEIGHT);
         settingsTable.add(musicUpButton)
-                .pad(Constants.UI_PADDING)
+                .space(Constants.UI_PADDING)
                 .prefSize(Constants.MENU_BUTTON_HEIGHT);
         settingsTable.add(musicLevelLabel).right()
-                .pad(Constants.UI_PADDING)
+                .space(Constants.UI_PADDING)
                 .prefSize(Constants.MENU_BUTTON_HEIGHT / 2f);
         settingsTable.row();
-        settingsTable.add(soundVolumeLabel).left().pad(Constants.UI_PADDING);
+        settingsTable.add(soundVolumeLabel).left().space(Constants.UI_PADDING);
         settingsTable.add(soundDownButton)
-                .pad(Constants.UI_PADDING)
+                .space(Constants.UI_PADDING)
                 .prefSize(Constants.MENU_BUTTON_HEIGHT);
         settingsTable.add(soundUpButton)
-                .pad(Constants.UI_PADDING)
+                .space(Constants.UI_PADDING)
                 .prefSize(Constants.MENU_BUTTON_HEIGHT);
         settingsTable.add(soundLevelLabel).right()
-                .pad(Constants.UI_PADDING)
+                .space(Constants.UI_PADDING)
                 .prefSize(Constants.MENU_BUTTON_HEIGHT / 2f);
         settingsTable.row();
-        settingsTable.add(backButton).center()
-                .pad(Constants.UI_PADDING)
+        settingsTable.add(creditsButton).center()
+                .space(Constants.UI_PADDING)
                 .prefSize(soundVolumeLabel.getPrefWidth(), Constants.MENU_BUTTON_HEIGHT);
-
+        settingsTable.add(backButton).center()
+                .colspan(3)
+                .space(Constants.UI_PADDING)
+                .prefSize(soundVolumeLabel.getPrefWidth(), Constants.MENU_BUTTON_HEIGHT);
 
         stage.clear();
         stage.addActor(settingsTable);
 
         grassSprite.setAlpha(0);
+    }
+
+    private void showCreditsMenu() {
+        Label creditsHeaderLabel = new Label("Credits", labelStyle);
+
+        FileHandle file = Gdx.files.internal("credits.txt");
+        String creditsText = file.readString();
+        Label.LabelStyle creditLabelStyle = new Label.LabelStyle(creditsFont, Constants.FONT_COLOR);
+        Label creditsTextLabel = new Label(creditsText, creditLabelStyle);
+        creditsTextLabel.setWrap(true);
+        ScrollPane creditsPane = new ScrollPane(creditsTextLabel, scrollPaneStyle);
+        creditsPane.setFadeScrollBars(false);
+
+        Table table = new Table();
+        table.setFillParent(true);
+        table.pad(Constants.UI_PADDING);
+        table.add(creditsHeaderLabel).space(Constants.UI_PADDING).center();
+        table.row();
+        table.add(creditsPane)
+                .prefWidth(Constants.APP_WIDTH);
+        table.row();
+        table.add(backButton).space(Constants.UI_PADDING)
+                .prefSize(Constants.MENU_BUTTON_WIDTH, Constants.MENU_BUTTON_HEIGHT);
+
+        stage.clear();
+        stage.addActor(table);
     }
 
     @Override
@@ -328,6 +380,8 @@ class SplashScreen implements InputProcessor, Screen {
 
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
+
+        stage.act(delta);
 
         game.batch.begin();
         grassSprite.draw(game.batch);
@@ -363,6 +417,7 @@ class SplashScreen implements InputProcessor, Screen {
         upTexture.dispose();
         downTexture.dispose();
         font.dispose();
+        creditsFont.dispose();
     }
 
     @Override
