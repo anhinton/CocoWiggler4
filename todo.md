@@ -1,8 +1,9 @@
 # TODO
   
-  + add Back/Menu button to GameScreen (Input.Keys.BACK/ESC on iOS)
+  + ~~add "Menu" button to GameScreen (no Input.Keys.BACK/ESC on iOS)~~
+      - ~~clicking goes back to SplashScreen~~
   
-  + add buttons to Splash Screen
+  + add buttons to SplashScreen
       - Play
           - move from keyDown() logic
       - Settings

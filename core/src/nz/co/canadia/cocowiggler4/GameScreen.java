@@ -1,20 +1,23 @@
 package nz.co.canadia.cocowiggler4;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-
 import nz.co.canadia.cocowiggler4.util.Constants;
 
 class GameScreen implements InputProcessor, Screen {
@@ -29,6 +32,11 @@ class GameScreen implements InputProcessor, Screen {
     private final Array<Texture> pooBitmaps = new Array<>();
     private final Array<Poo> poos;
     private final boolean debug;
+    private final Stage stage;
+    private final Texture textureUp;
+    private final Texture textureDown;
+    private final Label producedLabel;
+    private final Label consumedLabel;
 
     GameScreen(final CocoWiggler gam) {
         this.game = gam;
@@ -59,10 +67,58 @@ class GameScreen implements InputProcessor, Screen {
 
         background = new Background();
 
-        Gdx.input.setInputProcessor(this);
+        Label.LabelStyle scoreLabelStyle = new Label.LabelStyle(font, Constants.FONT_COLOR);
+        producedLabel = new Label("", scoreLabelStyle);
+        consumedLabel = new Label("", scoreLabelStyle);
+
+        textureUp = new Texture("graphics/button_up.png");
+        NinePatchDrawable patchDrawableUp = new NinePatchDrawable(
+                new NinePatch(textureUp, 3, 3, 3, 3));
+        textureDown = new Texture("graphics/button_down.png");
+        NinePatchDrawable patchDrawableDown = new NinePatchDrawable(
+                new NinePatch(textureDown, 3, 3, 3, 3));
+        ImageTextButton.ImageTextButtonStyle style =
+                new ImageTextButton.ImageTextButtonStyle(
+                        patchDrawableUp, patchDrawableDown, patchDrawableUp, font);
+        style.fontColor = Constants.FONT_COLOR;
+        ImageTextButton menuButton = new ImageTextButton(
+                "Menu", style);
+        menuButton.addListener(new ChangeListener() {
+            @Override
+            public void changed(ChangeEvent event, Actor actor) {
+                goBack();
+            }
+        });
+
+        stage = new Stage(viewport);
+
+        Table table = new Table();
+        table.setFillParent(true);
+        table.top();
+        table.pad(5, 10, 10, 5);
+        table.add(producedLabel).left().expandX().prefWidth(Constants.APP_WIDTH / 4f);
+        table.add(menuButton).center();
+        table.add(consumedLabel).right().expandX().prefWidth(Constants.APP_WIDTH / 4f);
+
+        stage.addActor(table);
+
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
+        Gdx.input.setInputProcessor(multiplexer);
 
         // DEBUG GRAPHICS
         debug = Constants.GRAPHICS_DEBUG;
+    }
+
+    private void updateScores() {
+        producedLabel.setText("Produced: " + coco.getPooCount());
+        consumedLabel.setText("Consumed: " + coco.getEatenCount());
+    }
+
+    private void goBack() {
+        game.setScreen(new SplashScreen(game));
+        dispose();
     }
 
     @Override
@@ -100,15 +156,14 @@ class GameScreen implements InputProcessor, Screen {
         // draw coco
         coco.draw(game.batch);
 
-        // do text
-        font.setColor(Constants.FONT_COLOR);
-        font.draw(game.batch, "Produced: " + coco.getPooCount(), 10, Constants.APP_HEIGHT - 10, 0, Align.left,
-                false);
-        font.draw(game.batch, "Consumed: " + coco.getEatenCount(), Constants.APP_WIDTH - 10, Constants.APP_HEIGHT - 10,
-                0, Align.right, false);
-
         // end sprite batch
         game.batch.end();
+
+        // update scores
+        updateScores();
+
+        // draw UI
+        stage.draw();
 
         // GRAPHICS DEBUGGING
         if (debug) {
@@ -132,6 +187,9 @@ class GameScreen implements InputProcessor, Screen {
         for (Poo poo: poos) {
             poo.dispose();
         }
+        textureUp.dispose();
+        textureDown.dispose();
+        stage.dispose();
     }
 
     @Override
@@ -161,8 +219,7 @@ class GameScreen implements InputProcessor, Screen {
             // go back to splash screen on back key/Escape
             case Input.Keys.BACK:
             case Input.Keys.ESCAPE:
-                game.setScreen(new SplashScreen(game));
-                dispose();
+                goBack();
                 break;
             // movement buttons
             case Input.Keys.LEFT:

@@ -18,10 +18,11 @@ public class CocoWiggler extends Game {
         music = Gdx.audio.newMusic(Gdx.files.internal("music/soundtrack.mp3"));
         music.setVolume(0.8f);
         music.setLooping(true);
-        music.play();
+//        music.play();
 
         // show the intro screen
-        this.setScreen(new SplashScreen(this));
+//        this.setScreen(new SplashScreen(this));
+        this.setScreen(new GameScreen(this));
     }
 
     public void render() {
