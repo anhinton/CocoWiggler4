@@ -226,7 +226,15 @@ class GameScreen implements InputProcessor, Screen {
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        return false;
+        // Mouse/touch-screen movement
+        Vector3 target = camera.unproject(
+                new Vector3(screenX, screenY, 0),
+                viewport.getScreenX(),
+                viewport.getScreenY(),
+                viewport.getScreenWidth(),
+                viewport.getScreenHeight());
+        coco.setTarget(target);
+        return true;
     }
 
     @Override
