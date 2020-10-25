@@ -1,18 +1,23 @@
 # TODO
   
-  + ~~add menu buttons to SplashScreen~~
-      - ~~Play~~
-          - ~~move from touchDown() logic~~
-      - ~~Settings~~
-      - ~~Quit (Desktop only)~~
-  
   + create SettingsScreen
       - get there from SplashScreen Settings button
       - Music Volume
       - Sound Volume
       - Credits
+      
+  + redo app icons
+      - Android
+      - Desktop
+      - HTML
   
 ## Done
+  
+  + ~~add menu buttons to SplashScreen~~
+      - ~~Play~~
+          - ~~move from touchDown() logic~~
+      - ~~Settings~~
+      - ~~Quit (Desktop only)~~
   
   + ~~add "Menu" button to GameScreen (no Input.Keys.BACK/ESC on iOS)~~
       - ~~clicking goes back to SplashScreen~~
