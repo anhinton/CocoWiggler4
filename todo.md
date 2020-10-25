@@ -20,15 +20,8 @@
       - orientationPortrait = false
       - useAccelerometer = false
       - useCompass = false
-
-  + config ios/Info.plist.xml
-      - force portrait mode on iPad
-> <key>UISupportedInterfaceOrientations</key>
-<array>
-    <string>UIInterfaceOrientationLandscapeRight</string>
-    <string>UIInterfaceOrientationLandscapeLeft</string>
-</array>
-<key>UIRequiresFullScreen</key>
-<true/>
   
 ## Done
+
+  + ~~config ios/Info.plist.xml~~
+      - ~~force portrait mode on iPad~~
