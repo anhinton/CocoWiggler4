@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.FitViewport;
@@ -157,18 +158,48 @@ class GameScreen implements InputProcessor, Screen {
 
     @Override
     public boolean keyDown(int keycode) {
-        // go back to splash screen on back key/Escape
-        if (keycode == Input.Keys.BACK || keycode == Input.Keys.ESCAPE) {
-            game.setScreen(new SplashScreen(game));
-            dispose();
-            return true;
+        switch(keycode) {
+            // go back to splash screen on back key/Escape
+            case Input.Keys.BACK:
+            case Input.Keys.ESCAPE:
+                game.setScreen(new SplashScreen(game));
+                dispose();
+                break;
+            // movement buttons
+            case Input.Keys.LEFT:
+                coco.setMovingLeft(true);
+                break;
+            case Input.Keys.RIGHT:
+                coco.setMovingRight(true);
+                break;
+            case Input.Keys.UP:
+                coco.setMovingUp(true);
+                break;
+            case Input.Keys.DOWN:
+                coco.setMovingDown(true);
+                break;
         }
-        return false;
+        return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        return false;
+        switch(keycode) {
+            // movement buttons
+            case Input.Keys.LEFT:
+                coco.setMovingLeft(false);
+                break;
+            case Input.Keys.RIGHT:
+                coco.setMovingRight(false);
+                break;
+            case Input.Keys.UP:
+                coco.setMovingUp(false);
+                break;
+            case Input.Keys.DOWN:
+                coco.setMovingDown(false);
+                break;
+        }
+        return true;
     }
 
     @Override
@@ -178,7 +209,15 @@ class GameScreen implements InputProcessor, Screen {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        return false;
+        // Mouse/touch-screen movement
+        Vector3 target = camera.unproject(
+                new Vector3(screenX, screenY, 0),
+                viewport.getScreenX(),
+                viewport.getScreenY(),
+                viewport.getScreenWidth(),
+                viewport.getScreenHeight());
+        coco.setTarget(target);
+        return true;
     }
 
     @Override

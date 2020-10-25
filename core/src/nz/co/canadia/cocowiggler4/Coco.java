@@ -1,7 +1,6 @@
 package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -28,10 +27,10 @@ class Coco {
     private Sound chomp;
     private Sound pop;
     private float rot;
-    private boolean pressingLeft;
-    private boolean pressingRight;
-    private boolean pressingUp;
-    private boolean pressingDown;
+    private boolean movingLeft;
+    private boolean movingRight;
+    private boolean movingUp;
+    private boolean movingDown;
     private boolean moving;
     private boolean facingRight;
     private float changeX;
@@ -45,10 +44,10 @@ class Coco {
 
     Coco () {
         // initialize variables
-        pressingLeft = false;
-        pressingRight = false;
-        pressingUp = false;
-        pressingDown = false;
+        movingLeft = false;
+        movingRight = false;
+        movingUp = false;
+        movingDown = false;
 
         facingRight = false;
         headCentre = new Vector2();
@@ -67,8 +66,8 @@ class Coco {
                 bitmap.getHeight());
         sprite = new Sprite(region);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        sprite.setPosition(Constants.APP_WIDTH / 2 - bitmap.getWidth() / 2,
-                Constants.APP_HEIGHT / 2 - bitmap.getHeight() / 2);
+        sprite.setPosition(Constants.APP_WIDTH / 2f - bitmap.getWidth() / 2f,
+                Constants.APP_HEIGHT / 2f - bitmap.getHeight() / 2f);
 
         calculateHeadCentre();
 
@@ -78,6 +77,27 @@ class Coco {
 
         pooCount = 0;
         eatenCount = 0;
+    }
+
+    public void setMovingLeft(boolean movingLeft) {
+        this.movingLeft = movingLeft;
+    }
+
+    public void setMovingRight(boolean movingRight) {
+        this.movingRight = movingRight;
+    }
+
+    public void setMovingUp(boolean movingUp) {
+        this.movingUp = movingUp;
+    }
+
+    public void setMovingDown(boolean movingDown) {
+        this.movingDown = movingDown;
+    }
+
+    public void setTarget(Vector3 target) {
+        this.target = target;
+        moving = true;
     }
 
     private void calculateHeadCentre() {
@@ -114,29 +134,6 @@ class Coco {
                     eatenCount++;
                 }
             }
-        }
-
-        // Movement controls
-
-        // Keyboard movement
-        pressingLeft = Gdx.input.isKeyPressed(Input.Keys.LEFT | Input.Keys.DPAD_LEFT);
-        pressingRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT | Input.Keys.DPAD_RIGHT);
-        pressingUp = Gdx.input.isKeyPressed(Input.Keys.UP | Input.Keys.DPAD_UP);
-        pressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN | Input.Keys.DPAD_DOWN);
-        // cancel opposites
-        if (pressingLeft && pressingRight) {
-            pressingLeft = false;
-            pressingRight = false;
-        }
-        if (pressingUp && pressingDown) {
-            pressingUp = false;
-            pressingDown = false;
-        }
-
-        // Mouse/touch-screen movement
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            moving = true;
-            viewport.unproject(target.set(Gdx.input.getX(), Gdx.input.getY(), 0));
         }
 
         // perform movement
@@ -208,40 +205,47 @@ class Coco {
             }
         }
 
-        if (pressingLeft) {
+        if (movingLeft && movingRight) {
+            movingLeft = false;
+            movingRight = false;
+        }
+        if (movingUp && movingDown) {
+            movingUp = false;
+            movingDown = false;
+        }
+
+        if (movingLeft) {
             if (facingRight) {
                 facingRight = false;
             }
-            if (pressingUp) {
+            if (movingUp) {
                 changeX = -Constants.ANGLE_SPEED;
                 changeY = Constants.ANGLE_SPEED;
-            } else if (pressingDown) {
+            } else if (movingDown) {
                 changeX = -Constants.ANGLE_SPEED;
                 changeY = -Constants.ANGLE_SPEED;
-
             } else {
                 changeX = -Constants.SPEED;
             }
         }
-        if (pressingRight) {
+        if (movingRight) {
             if (!facingRight) {
                 facingRight = true;
             }
-            if (pressingUp) {
+            if (movingUp) {
                 changeX = Constants.ANGLE_SPEED;
                 changeY = Constants.ANGLE_SPEED;
-            } else if (pressingDown) {
+            } else if (movingDown) {
                 changeX = Constants.ANGLE_SPEED;
                 changeY = -Constants.ANGLE_SPEED;
-
             } else {
                 changeX = Constants.SPEED;
             }
         }
-        if (pressingUp & !pressingLeft & !pressingRight) {
+        if (movingUp & !movingLeft & !movingRight) {
             changeY =  Constants.SPEED;
         }
-        if (pressingDown & !pressingLeft & !pressingRight) {
+        if (movingDown & !movingLeft & !movingRight) {
             changeY = -Constants.SPEED;
         }
 
