@@ -21,7 +21,7 @@ buildscript {
 
 allprojects {
 
-    version = '2019-10-11'
+    version = '2020-10-26'
     ext {
         appName = "Coco Wiggler 4"
         gdxVersion = '1.9.11'
