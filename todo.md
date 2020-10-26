@@ -1,11 +1,11 @@
 # TODO
-      
-  + redo app icons
-      - Android
-      - Desktop
-      - HTML
   
 ## Done
+      
+  + ~~redo app icons~~
+      - ~~Android~~
+      - ~~Desktop~~
+      - ~~HTML~~
   
   + ~~create SettingsScreen~~
       - ~~get there from SplashScreen Settings button~~
