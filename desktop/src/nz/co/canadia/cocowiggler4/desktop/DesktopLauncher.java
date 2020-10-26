@@ -1,5 +1,6 @@
 package nz.co.canadia.cocowiggler4.desktop;
 
+import com.badlogic.gdx.Files;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
 import nz.co.canadia.cocowiggler4.CocoWiggler;
@@ -11,6 +12,9 @@ public class DesktopLauncher {
 		config.title = Constants.GAME_NAME;
 		config.width = Constants.APP_WIDTH;
 		config.height = Constants.APP_HEIGHT;
+		config.addIcon("icon_128.png", Files.FileType.Local);
+		config.addIcon("icon_32.png", Files.FileType.Local);
+		config.addIcon("icon_16.png", Files.FileType.Local);
 		new LwjglApplication(new CocoWiggler(), config);
 	}
 }
