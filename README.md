@@ -12,7 +12,7 @@ at <https://github.com/libgdx/libgdx/wiki/Gradle-and-Intellij-IDEA>.
 
 ### License 
 
-Coco Wiggler 4 copyright 2017 Ashley Noel Hinton.
+Coco Wiggler 4 copyright 2017-2020 Ashley Noel Hinton.
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -36,6 +36,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 Unless declared otherwise below the assets in `android/assets` are licensed under a 
 <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/">Creative Commons 
 Attribution-ShareAlike 4.0 International License</a>.
+
+`graphics/title.png` main title "bubble writing" made by Amy Galvin.
 
 `graphics/grass.png` 
 "[grass](https://www.flickr.com/photos/shyb/72039410/in/photolist-7ndNN-23ve4H-eT8X7S-7zBL2-4XmZwT-5m5wXd-rse9A-51eajc-4kXut-9PtF4q-NhDLu-a24W4b-7zBHZ-bwPKam-5Aoces-2gSVa-aSMdHH-5u72ie-axj9Ez-qDmPtw-pgjFnQ-cA9JJ-8TnDTg-7ePDRi-dWiHur-4xUbdm-oAz15Q-b4dTkD-71x7FG-qkFFfQ-4JTp9D-aBjBgi-a9FUZc-apLP4g-objWs3-2YEFCP-99QAmE-psSL2X-h1abnb-9ZAWQM-5o1ux1-RQWfEt-7r8N89-4SzKHo-7zBUf-NrnbW-2YKaM1-7zBS3-4P8vWq-nxrctF)" 

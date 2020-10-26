@@ -1,7 +1,6 @@
 package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -14,7 +13,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.TimeUtils;
-import com.badlogic.gdx.utils.viewport.Viewport;
 
 import nz.co.canadia.cocowiggler4.util.Constants;
 
@@ -23,32 +21,35 @@ import nz.co.canadia.cocowiggler4.util.Constants;
  */
 
 class Coco {
-    private Texture bitmap;
-    private Sprite sprite;
-    private Sound chomp;
-    private Sound pop;
+    private final Texture bitmap;
+    private final Sprite sprite;
+    private final Sound chomp;
+    private final Sound pop;
+    private final float soundVolume;
     private float rot;
-    private boolean pressingLeft;
-    private boolean pressingRight;
-    private boolean pressingUp;
-    private boolean pressingDown;
+    private boolean movingLeft;
+    private boolean movingRight;
+    private boolean movingUp;
+    private boolean movingDown;
     private boolean moving;
     private boolean facingRight;
     private float changeX;
     private float changeY;
-    private Vector2 headCentre;
+    private final Vector2 headCentre;
     private Vector3 target;
     private long lastPooTime;
     private long pooDelay;
     private int pooCount;
     private int eatenCount;
 
-    Coco () {
+    Coco(float soundVolume) {
+        this.soundVolume = soundVolume;
+
         // initialize variables
-        pressingLeft = false;
-        pressingRight = false;
-        pressingUp = false;
-        pressingDown = false;
+        movingLeft = false;
+        movingRight = false;
+        movingUp = false;
+        movingDown = false;
 
         facingRight = false;
         headCentre = new Vector2();
@@ -58,8 +59,8 @@ class Coco {
         changeX = 0;
         changeY = 0;
 
-        chomp = Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.ogg"));
-        pop = Gdx.audio.newSound(Gdx.files.internal("sounds/pop.ogg"));
+        chomp = Gdx.audio.newSound(Gdx.files.internal("sounds/chomp.mp3"));
+        pop = Gdx.audio.newSound(Gdx.files.internal("sounds/pop.mp3"));
 
         bitmap = new Texture("graphics/coco.png");
         bitmap.setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
@@ -67,8 +68,8 @@ class Coco {
                 bitmap.getHeight());
         sprite = new Sprite(region);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
-        sprite.setPosition(Constants.APP_WIDTH / 2 - bitmap.getWidth() / 2,
-                Constants.APP_HEIGHT / 2 - bitmap.getHeight() / 2);
+        sprite.setPosition(Constants.APP_WIDTH / 2f - bitmap.getWidth() / 2f,
+                Constants.APP_HEIGHT / 2f - bitmap.getHeight() / 2f);
 
         calculateHeadCentre();
 
@@ -80,14 +81,34 @@ class Coco {
         eatenCount = 0;
     }
 
+    public void setMovingLeft(boolean movingLeft) {
+        this.movingLeft = movingLeft;
+    }
+
+    public void setMovingRight(boolean movingRight) {
+        this.movingRight = movingRight;
+    }
+
+    public void setMovingUp(boolean movingUp) {
+        this.movingUp = movingUp;
+    }
+
+    public void setMovingDown(boolean movingDown) {
+        this.movingDown = movingDown;
+    }
+
+    public void setTarget(Vector3 target) {
+        this.target = target;
+        moving = true;
+    }
+
     private void calculateHeadCentre() {
         if (facingRight) {
             headCentre.x = sprite.getWidth() * 5 / 6;
-            headCentre.y = sprite.getHeight() / 5;
         } else {
             headCentre.x = sprite.getWidth() / 6;
-            headCentre.y = sprite.getHeight() / 5;
         }
+        headCentre.y = sprite.getHeight() / 5;
     }
 
     private Circle getMouthBoundingCircle() {
@@ -95,7 +116,7 @@ class Coco {
                 sprite.getWidth() / 10));
     }
 
-    void update(Viewport viewport, Array<Texture> pooBitmaps, Array<Poo> poos) {
+    void update(Array<Texture> pooBitmaps, Array<Poo> poos) {
         // where is my head at
         calculateHeadCentre();
 
@@ -110,33 +131,10 @@ class Coco {
             if (poo.getBoundingCircle().overlaps(getMouthBoundingCircle())){
                 if (poo.isEdible()) {
                     poo.eatPoo();
-                    chomp.play(1.0f);
+                    chomp.play(soundVolume);
                     eatenCount++;
                 }
             }
-        }
-
-        // Movement controls
-
-        // Keyboard movement
-        pressingLeft = Gdx.input.isKeyPressed(Input.Keys.LEFT | Input.Keys.DPAD_LEFT);
-        pressingRight = Gdx.input.isKeyPressed(Input.Keys.RIGHT | Input.Keys.DPAD_RIGHT);
-        pressingUp = Gdx.input.isKeyPressed(Input.Keys.UP | Input.Keys.DPAD_UP);
-        pressingDown = Gdx.input.isKeyPressed(Input.Keys.DOWN | Input.Keys.DPAD_DOWN);
-        // cancel opposites
-        if (pressingLeft && pressingRight) {
-            pressingLeft = false;
-            pressingRight = false;
-        }
-        if (pressingUp && pressingDown) {
-            pressingUp = false;
-            pressingDown = false;
-        }
-
-        // Mouse/touch-screen movement
-        if (Gdx.input.isButtonPressed(Input.Buttons.LEFT)) {
-            moving = true;
-            viewport.unproject(target.set(Gdx.input.getX(), Gdx.input.getY(), 0));
         }
 
         // perform movement
@@ -208,40 +206,47 @@ class Coco {
             }
         }
 
-        if (pressingLeft) {
+        if (movingLeft && movingRight) {
+            movingLeft = false;
+            movingRight = false;
+        }
+        if (movingUp && movingDown) {
+            movingUp = false;
+            movingDown = false;
+        }
+
+        if (movingLeft) {
             if (facingRight) {
                 facingRight = false;
             }
-            if (pressingUp) {
+            if (movingUp) {
                 changeX = -Constants.ANGLE_SPEED;
                 changeY = Constants.ANGLE_SPEED;
-            } else if (pressingDown) {
+            } else if (movingDown) {
                 changeX = -Constants.ANGLE_SPEED;
                 changeY = -Constants.ANGLE_SPEED;
-
             } else {
                 changeX = -Constants.SPEED;
             }
         }
-        if (pressingRight) {
+        if (movingRight) {
             if (!facingRight) {
                 facingRight = true;
             }
-            if (pressingUp) {
+            if (movingUp) {
                 changeX = Constants.ANGLE_SPEED;
                 changeY = Constants.ANGLE_SPEED;
-            } else if (pressingDown) {
+            } else if (movingDown) {
                 changeX = Constants.ANGLE_SPEED;
                 changeY = -Constants.ANGLE_SPEED;
-
             } else {
                 changeX = Constants.SPEED;
             }
         }
-        if (pressingUp & !pressingLeft & !pressingRight) {
+        if (movingUp & !movingLeft & !movingRight) {
             changeY =  Constants.SPEED;
         }
-        if (pressingDown & !pressingLeft & !pressingRight) {
+        if (movingDown & !movingLeft & !movingRight) {
             changeY = -Constants.SPEED;
         }
 
@@ -286,7 +291,7 @@ class Coco {
                 Constants.POO_TIME_MAX);
 
         // make a poo sound
-        pop.play(1.0f);
+        pop.play(soundVolume);
     }
 
     int getPooCount() {
