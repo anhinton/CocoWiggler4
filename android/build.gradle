@@ -1,5 +1,5 @@
 android {
-    buildToolsVersion "29.0.2"
+    buildToolsVersion "29.0.3"
     compileSdkVersion 29
     sourceSets {
         main {
@@ -21,11 +21,11 @@ android {
         minSdkVersion 14
         targetSdkVersion 29
         versionCode 5
-        versionName "2020-10-26"
+        versionName "2021.05.14"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -43,7 +43,7 @@ task copyAndroidNatives {
         file("libs/x86_64/").mkdirs()
         file("libs/x86/").mkdirs()
 
-        configurations.natives.files.each { jar ->
+        configurations.natives.copy().files.each { jar ->
             def outputDir = null
             if (jar.name.endsWith("natives-arm64-v8a.jar")) outputDir = file("libs/arm64-v8a")
             if (jar.name.endsWith("natives-armeabi-v7a.jar")) outputDir = file("libs/armeabi-v7a")
@@ -88,3 +88,5 @@ task run(type: Exec) {
     def adb = path + "/platform-tools/adb"
     commandLine "$adb", 'shell', 'am', 'start', '-n', 'nz.co.canadia.cocowiggler4/nz.co.canadia.cocowiggler4.AndroidLauncher'
 }
+
+eclipse.project.name = appName + "-android"
