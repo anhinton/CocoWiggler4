@@ -1,20 +1,20 @@
 package nz.co.canadia.cocowiggler4.desktop;
 
-import com.badlogic.gdx.Files;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
-import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
+import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
+
 import nz.co.canadia.cocowiggler4.CocoWiggler;
 import nz.co.canadia.cocowiggler4.util.Constants;
 
 public class DesktopLauncher {
 	public static void main (String[] arg) {
-		LwjglApplicationConfiguration config = new LwjglApplicationConfiguration();
-		config.title = Constants.GAME_NAME;
-		config.width = Constants.APP_WIDTH;
-		config.height = Constants.APP_HEIGHT;
-		config.addIcon("icon_128.png", Files.FileType.Local);
-		config.addIcon("icon_32.png", Files.FileType.Local);
-		config.addIcon("icon_16.png", Files.FileType.Local);
-		new LwjglApplication(new CocoWiggler(), config);
+		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
+		config.setTitle(Constants.GAME_NAME);
+		config.setWindowedMode(Constants.APP_WIDTH, Constants.APP_HEIGHT);
+		config.setWindowIcon("icon_128.png",
+				"icon_32.png",
+				"icon_16.png");
+
+		new Lwjgl3Application(new CocoWiggler(), config);
 	}
 }
