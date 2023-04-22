@@ -21,7 +21,7 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '2021.05.14'
+    version = '2023.04.22'
     ext {
         appName = "Coco Wiggler 4"
         gdxVersion = '1.11.0'
