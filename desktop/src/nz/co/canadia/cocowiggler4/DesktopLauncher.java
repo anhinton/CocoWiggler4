@@ -1,9 +1,8 @@
-package nz.co.canadia.cocowiggler4.desktop;
+package nz.co.canadia.cocowiggler4;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3ApplicationConfiguration;
 
-import nz.co.canadia.cocowiggler4.CocoWiggler;
 import nz.co.canadia.cocowiggler4.util.Constants;
 
 public class DesktopLauncher {
