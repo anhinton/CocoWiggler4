@@ -1,6 +1,6 @@
 android {
-    buildToolsVersion "33.0.0"
-    compileSdkVersion 32
+    buildToolsVersion "33.0.2"
+    compileSdkVersion 33
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -19,9 +19,9 @@ android {
     defaultConfig {
         applicationId "nz.co.canadia.cocowiggler4"
         minSdkVersion 14
-        targetSdkVersion 32
-        versionCode 6
-        versionName "2023.04.22"
+        targetSdkVersion 33
+        versionCode 7
+        versionName "2023.08.19"
     }
     buildTypes {
         release {

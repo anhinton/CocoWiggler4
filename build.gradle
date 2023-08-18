@@ -21,10 +21,10 @@ buildscript {
 allprojects {
     apply plugin: "eclipse"
 
-    version = '2023.04.22'
+    version = '2023.08.19'
     ext {
         appName = "Coco Wiggler 4"
-        gdxVersion = '1.11.0'
+        gdxVersion = '1.12.0'
         roboVMVersion = '2.3.19'
         box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.4'
